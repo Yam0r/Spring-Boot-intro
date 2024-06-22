@@ -1,10 +1,12 @@
 package mate.academy.springintro.repository;
 
 import java.awt.print.Book;
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface BookRepository extends JpaRepository<Book, Long> {
+public interface BookRepository {
+    Book save(Book book);
 
+    List findAll();
 }
