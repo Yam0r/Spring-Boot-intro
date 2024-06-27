@@ -11,10 +11,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "books")
+@Table(name = "book")
 @Getter
 @Setter
-public class Book extends java.awt.print.Book {
+public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -35,3 +35,4 @@ public class Book extends java.awt.print.Book {
 
     private String coverImage;
 }
+

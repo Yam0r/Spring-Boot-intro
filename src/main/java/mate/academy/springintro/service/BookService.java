@@ -1,6 +1,6 @@
-package mate.academy.springintro.repository;
+package mate.academy.springintro.service;
 
-import java.awt.print.Book;
+import mate.academy.springintro.model.Book;
 import java.util.List;
 
 public interface BookService {
