@@ -1,13 +1,12 @@
 package mate.academy.springintro;
 
+import java.math.BigDecimal;
+import mate.academy.springintro.model.Book;
 import mate.academy.springintro.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import mate.academy.springintro.model.Book;
-import java.math.BigDecimal;
 
 @SpringBootApplication
 public class SpringIntroApplication implements CommandLineRunner {
@@ -34,5 +33,3 @@ public class SpringIntroApplication implements CommandLineRunner {
         System.out.println("Book saved successfully!");
     }
 }
-//spring.jpa.hibernate.ddl-auto=create-drop
-

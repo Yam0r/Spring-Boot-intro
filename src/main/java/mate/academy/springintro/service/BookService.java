@@ -1,7 +1,7 @@
 package mate.academy.springintro.service;
 
-import mate.academy.springintro.model.Book;
 import java.util.List;
+import mate.academy.springintro.model.Book;
 
 public interface BookService {
     Book save(Book book);

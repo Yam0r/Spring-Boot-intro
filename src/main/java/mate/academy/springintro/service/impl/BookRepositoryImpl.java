@@ -1,11 +1,10 @@
 package mate.academy.springintro.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
 import mate.academy.springintro.model.Book;
 import mate.academy.springintro.service.BookRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Repository
 public abstract class BookRepositoryImpl implements BookRepository {
@@ -22,4 +21,3 @@ public abstract class BookRepositoryImpl implements BookRepository {
         return new ArrayList<>(books);
     }
 }
-

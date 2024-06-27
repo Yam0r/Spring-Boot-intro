@@ -1,12 +1,11 @@
 package mate.academy.springintro.service.impl;
 
+import java.util.List;
 import mate.academy.springintro.model.Book;
 import mate.academy.springintro.service.BookRepository;
 import mate.academy.springintro.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class BookServiceImpl implements BookService {
