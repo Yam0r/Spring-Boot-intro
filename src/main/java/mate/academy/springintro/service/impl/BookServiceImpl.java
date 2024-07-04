@@ -28,12 +28,12 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Optional<Book> findById(Long id){
+    public Optional<Book> findById(Long id) {
         return bookRepository.findByIdAndDeletedFalse(id);
     }
 
     @Override
-    public void delete(Long id){
+    public void delete(Long id) {
         bookRepository.findById(id).ifPresent(book -> {
             book.setDeleted(true);
             bookRepository.save(book);
