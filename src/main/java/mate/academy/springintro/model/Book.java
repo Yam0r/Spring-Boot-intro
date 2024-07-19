@@ -11,7 +11,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "book")
+@Table(name = "books")
 @Getter
 @Setter
 public class Book {
@@ -31,6 +31,7 @@ public class Book {
     @Column(nullable = false)
     private BigDecimal price;
 
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
     private String coverImage;

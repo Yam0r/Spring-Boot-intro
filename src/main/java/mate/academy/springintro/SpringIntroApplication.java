@@ -2,7 +2,7 @@ package mate.academy.springintro;
 
 import java.math.BigDecimal;
 import mate.academy.springintro.model.Book;
-import mate.academy.springintro.service.BookService;
+import mate.academy.springintro.repository.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;

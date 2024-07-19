@@ -1,4 +1,4 @@
-package mate.academy.springintro.service;
+package mate.academy.springintro.repository;
 
 import java.util.List;
 import java.util.Optional;

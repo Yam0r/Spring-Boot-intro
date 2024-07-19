@@ -3,8 +3,8 @@ package mate.academy.springintro.service.impl;
 import java.util.List;
 import java.util.Optional;
 import mate.academy.springintro.model.Book;
-import mate.academy.springintro.service.BookRepository;
-import mate.academy.springintro.service.BookService;
+import mate.academy.springintro.repository.BookRepository;
+import mate.academy.springintro.repository.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

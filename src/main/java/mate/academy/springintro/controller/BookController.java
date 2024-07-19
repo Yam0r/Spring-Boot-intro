@@ -3,7 +3,7 @@ package mate.academy.springintro.controller;
 import java.util.List;
 import java.util.Optional;
 import mate.academy.springintro.model.Book;
-import mate.academy.springintro.service.BookService;
+import mate.academy.springintro.repository.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
