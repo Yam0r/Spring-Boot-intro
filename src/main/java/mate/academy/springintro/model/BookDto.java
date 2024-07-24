@@ -14,7 +14,7 @@ import lombok.Setter;
 @Table(name = "books")
 @Getter
 @Setter
-public class Book {
+public class BookDto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -31,11 +31,10 @@ public class Book {
     @Column(nullable = false)
     private BigDecimal price;
 
-    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
     private String coverImage;
 
-    @Column(nullable = false)
-    private Boolean deleted = false;
+    @Column(name = "is_deleted", nullable = false)
+    private boolean isDeleted = false;
 }

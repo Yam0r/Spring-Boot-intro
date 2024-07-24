@@ -1,10 +1,9 @@
 package mate.academy.springintro.controller;
 
 import java.util.List;
-import java.util.Optional;
-import mate.academy.springintro.model.Book;
-import mate.academy.springintro.repository.BookService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import mate.academy.springintro.model.BookDto;
+import mate.academy.springintro.service.BookService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,33 +15,30 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/books")
+@RequiredArgsConstructor
+@RequestMapping("/books")
 public class BookController {
     private final BookService bookService;
 
-    @Autowired
-    public BookController(BookService bookService) {
-        this.bookService = bookService;
-    }
-
     @GetMapping
-    public List<Book> findAll() {
+    public List<BookDto> findAll() {
         return bookService.findAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Book> findById(@PathVariable Long id) {
-        Optional<Book> book = bookService.findById(id);
-        return book.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<BookDto> findById(@PathVariable Long id) {
+        return bookService.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public Book create(@RequestBody Book book) {
+    public BookDto create(@RequestBody BookDto book) {
         return bookService.save(book);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Book> update(@PathVariable Long id, @RequestBody Book book) {
+    public ResponseEntity<BookDto> update(@PathVariable Long id, @RequestBody BookDto book) {
         return bookService.findById(id)
                 .map(existingBook -> {
                     existingBook.setTitle(book.getTitle());
@@ -51,15 +47,18 @@ public class BookController {
                     existingBook.setPrice(book.getPrice());
                     existingBook.setDescription(book.getDescription());
                     existingBook.setCoverImage(book.getCoverImage());
-                    bookService.save(existingBook);
-                    return ResponseEntity.ok(existingBook);
+                    return ResponseEntity.ok(bookService.save(existingBook));
                 })
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        bookService.delete(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<Object> delete(@PathVariable Long id) {
+        return bookService.findById(id)
+                .map(book -> {
+                    bookService.delete(id);
+                    return ResponseEntity.noContent().build();
+                })
+                .orElse(ResponseEntity.notFound().build());
     }
 }
