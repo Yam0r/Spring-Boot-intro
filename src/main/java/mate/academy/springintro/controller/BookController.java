@@ -1,11 +1,8 @@
 package mate.academy.springintro.controller;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import mate.academy.springintro.dto.BookRequestDto;
-import mate.academy.springintro.dto.BookResponseDto;
-import mate.academy.springintro.model.BookMapper;
+import mate.academy.springintro.model.BookDto;
 import mate.academy.springintro.service.BookService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,35 +19,35 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/books")
 public class BookController {
     private final BookService bookService;
-    private final BookMapper bookMapper;
 
     @GetMapping
-    public List<BookResponseDto> findAll() {
-        return bookService.findAll().stream()
-                .map(bookMapper::toDto)
-                .collect(Collectors.toList());
+    public List<BookDto> findAll() {
+        return bookService.findAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BookResponseDto> findById(@PathVariable Long id) {
+    public ResponseEntity<BookDto> findById(@PathVariable Long id) {
         return bookService.findById(id)
-                .map(bookMapper::toDto)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public BookResponseDto create(@RequestBody BookRequestDto book) {
-        return bookMapper.toDto(bookService.save(bookMapper.toEntity(book)));
+    public BookDto create(@RequestBody BookDto book) {
+        return bookService.save(book);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<BookResponseDto> update(@PathVariable Long id,
-                                                  @RequestBody BookRequestDto book) {
+    public ResponseEntity<BookDto> update(@PathVariable Long id, @RequestBody BookDto book) {
         return bookService.findById(id)
                 .map(existingBook -> {
-                    bookMapper.updateEntity(book, existingBook);
-                    return ResponseEntity.ok(bookMapper.toDto(bookService.save(existingBook)));
+                    existingBook.setTitle(book.getTitle());
+                    existingBook.setAuthor(book.getAuthor());
+                    existingBook.setIsbn(book.getIsbn());
+                    existingBook.setPrice(book.getPrice());
+                    existingBook.setDescription(book.getDescription());
+                    existingBook.setCoverImage(book.getCoverImage());
+                    return ResponseEntity.ok(bookService.save(existingBook));
                 })
                 .orElse(ResponseEntity.notFound().build());
     }
