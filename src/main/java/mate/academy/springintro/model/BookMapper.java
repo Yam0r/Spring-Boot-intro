@@ -1,8 +1,7 @@
-package mate.academy.springintro.mapper;
+package mate.academy.springintro.model;
 
-import mate.academy.springintro.model.BookDto;
-import mate.academy.springintro.DTO.BookRequestDto;
-import mate.academy.springintro.DTO.BookResponseDto;
+import mate.academy.springintro.dto.BookRequestDto;
+import mate.academy.springintro.dto.BookResponseDto;
 import org.springframework.stereotype.Component;
 
 @Component
