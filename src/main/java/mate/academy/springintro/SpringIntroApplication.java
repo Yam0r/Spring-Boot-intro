@@ -1,7 +1,7 @@
 package mate.academy.springintro;
 
 import java.math.BigDecimal;
-import mate.academy.springintro.model.BookDto;
+import mate.academy.springintro.model.CreatedBookDto;
 import mate.academy.springintro.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -20,7 +20,7 @@ public class SpringIntroApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        BookDto book = new BookDto();
+        CreatedBookDto book = new CreatedBookDto();
         book.setTitle("Grooks algorithms");
         book.setAuthor("Bob Johnson");
         book.setIsbn("978-4321567890");

@@ -2,14 +2,17 @@ package mate.academy.springintro.service;
 
 import java.util.List;
 import java.util.Optional;
-import mate.academy.springintro.model.BookDto;
+import mate.academy.springintro.model.CreatedBookDto;
 
 public interface BookService {
-    BookDto save(BookDto book);
+    CreatedBookDto save(CreatedBookDto book);
 
-    List<BookDto> findAll();
+    List<CreatedBookDto> findAll();
 
-    Optional<BookDto> findById(Long id);
+    Optional<CreatedBookDto> findById(Long id);
 
     void delete(Long id);
+
+    void updateBook(Long id);
 }
+

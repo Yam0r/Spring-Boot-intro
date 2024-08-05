@@ -2,7 +2,7 @@ package mate.academy.springintro.controller;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import mate.academy.springintro.model.BookDto;
+import mate.academy.springintro.model.CreatedBookDto;
 import mate.academy.springintro.service.BookService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,24 +21,25 @@ public class BookController {
     private final BookService bookService;
 
     @GetMapping
-    public List<BookDto> findAll() {
+    public List<CreatedBookDto> findAll() {
         return bookService.findAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BookDto> findById(@PathVariable Long id) {
+    public ResponseEntity<CreatedBookDto> findById(@PathVariable Long id) {
         return bookService.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public BookDto create(@RequestBody BookDto book) {
+    public CreatedBookDto create(@RequestBody CreatedBookDto book) {
         return bookService.save(book);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<BookDto> update(@PathVariable Long id, @RequestBody BookDto book) {
+    public ResponseEntity<CreatedBookDto> update(@PathVariable Long id,
+                                                 @RequestBody CreatedBookDto book) {
         return bookService.findById(id)
                 .map(existingBook -> {
                     existingBook.setTitle(book.getTitle());
@@ -56,9 +57,10 @@ public class BookController {
     public ResponseEntity<Object> delete(@PathVariable Long id) {
         return bookService.findById(id)
                 .map(book -> {
-                    bookService.delete(id);
+                    bookService.updateBook(id);
                     return ResponseEntity.noContent().build();
                 })
                 .orElse(ResponseEntity.notFound().build());
     }
+
 }

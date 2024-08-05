@@ -14,7 +14,7 @@ import lombok.Setter;
 @Table(name = "books")
 @Getter
 @Setter
-public class BookDto {
+public class CreatedBookDto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
