@@ -1,18 +1,19 @@
 package mate.academy.springintro.service;
 
+import mate.academy.springintro.dto.BookDto;
+import mate.academy.springintro.dto.BookRequestDto;
+import mate.academy.springintro.dto.BookResponseDto;
+
 import java.util.List;
-import java.util.Optional;
-import mate.academy.springintro.model.CreatedBookDto;
 
 public interface BookService {
-    CreatedBookDto save(CreatedBookDto book);
+    BookDto save(BookRequestDto requestDto);
 
-    List<CreatedBookDto> findAll();
+    List<BookDto> findAll();
 
-    Optional<CreatedBookDto> findById(Long id);
+    BookDto findById(Long id);
 
-    void delete(Long id);
+    BookDto updateBookById(Long id, BookResponseDto updateDto);
 
-    void updateBook(Long id);
+    void deleteById(Long id);
 }
-
