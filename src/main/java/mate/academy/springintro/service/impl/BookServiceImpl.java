@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Service
 public class BookServiceImpl implements BookService {
+    private static final String MESSAGE = "Can't find book by id";
 
     private BookRepository bookRepository;
     private BookMapper bookMapper;
@@ -36,14 +37,14 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookDto findById(Long id) {
         CreatedBookDto book = bookRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException("Can't find book by id " + id));
+                () -> new EntityNotFoundException(MESSAGE + id));
         return bookMapper.toBookDto(book);
     }
 
     @Override
     public BookDto updateBookById(Long id, BookResponseDto updateDto) {
         CreatedBookDto book = bookRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException("Can't find book by id " + id));
+                () -> new EntityNotFoundException(MESSAGE + id));
         bookMapper.updateBookFromDto(updateDto, book);
         return bookMapper.toBookDto(bookRepository.save(book));
     }
