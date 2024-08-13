@@ -1,7 +1,8 @@
 package mate.academy.springintro.service.impl;
 
-import lombok.RequiredArgsConstructor;
-import mate.academy.springintro.model.CreatedBookDto; // Используйте корректный класс модели
+import java.util.List;
+import java.util.stream.Collectors;
+import mate.academy.springintro.model.CreatedBookDto;
 import mate.academy.springintro.dto.BookDto;
 import mate.academy.springintro.dto.BookRequestDto;
 import mate.academy.springintro.dto.BookResponseDto;
@@ -10,27 +11,25 @@ import mate.academy.springintro.mapper.BookMapper;
 import mate.academy.springintro.repository.BookRepository;
 import mate.academy.springintro.service.BookService;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
 public class BookServiceImpl implements BookService {
     private static final String MESSAGE = "Can't find book by id";
 
-    private BookRepository bookRepository;
-    private BookMapper bookMapper;
+    private final BookRepository bookRepository;
+    private final BookMapper bookMapper;
 
     @Override
     public BookDto save(BookRequestDto requestDto) {
-        CreatedBookDto book = bookMapper.toModel(requestDto); // Используйте правильный метод и тип
+        CreatedBookDto book = bookMapper.toModel(requestDto);
         return bookMapper.toBookDto(bookRepository.save(book));
     }
 
     @Override
     public List<BookDto> findAll() {
-        List<CreatedBookDto> books = bookRepository.findAll(); // Корректное использование типа
+        List<CreatedBookDto> books = bookRepository.findAll();
         return books.stream().map(bookMapper::toBookDto).collect(Collectors.toList());
     }
 
