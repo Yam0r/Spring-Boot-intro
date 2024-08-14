@@ -16,7 +16,7 @@ import org.hibernate.annotations.SQLDelete;
 @Setter
 @SQLDelete(sql = "UPDATE books SET is_deleted = true WHERE id=?")
 @Table(name = "books")
-public class CreatedBookDto {
+public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

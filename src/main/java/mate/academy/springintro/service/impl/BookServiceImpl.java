@@ -1,10 +1,9 @@
 package mate.academy.springintro.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import mate.academy.springintro.model.CreatedBookDto; // Используйте корректный класс модели
+import mate.academy.springintro.dto.CreateBookRequestDto;
+import mate.academy.springintro.model.Book;
 import mate.academy.springintro.dto.BookDto;
-import mate.academy.springintro.dto.BookRequestDto;
-import mate.academy.springintro.dto.BookResponseDto;
 import mate.academy.springintro.exception.EntityNotFoundException;
 import mate.academy.springintro.mapper.BookMapper;
 import mate.academy.springintro.repository.BookRepository;
@@ -18,33 +17,33 @@ import java.util.stream.Collectors;
 @Service
 public class BookServiceImpl implements BookService {
 
-    private BookRepository bookRepository;
-    private BookMapper bookMapper;
+    private final BookRepository bookRepository; // Внедрение через final и Lombok
+    private final BookMapper bookMapper; // Внедрение через final и Lombok
 
     @Override
-    public BookDto save(BookRequestDto requestDto) {
-        CreatedBookDto book = bookMapper.toModel(requestDto); // Используйте правильный метод и тип
+    public BookDto save(CreateBookRequestDto requestDto) { // Изменен параметр на CreateBookRequestDto
+        Book book = bookMapper.toModel(requestDto);
         return bookMapper.toBookDto(bookRepository.save(book));
     }
 
     @Override
     public List<BookDto> findAll() {
-        List<CreatedBookDto> books = bookRepository.findAll(); // Корректное использование типа
+        List<Book> books = bookRepository.findAll();
         return books.stream().map(bookMapper::toBookDto).collect(Collectors.toList());
     }
 
     @Override
     public BookDto findById(Long id) {
-        CreatedBookDto book = bookRepository.findById(id).orElseThrow(
+        Book book = bookRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Can't find book by id " + id));
         return bookMapper.toBookDto(book);
     }
 
     @Override
-    public BookDto updateBookById(Long id, BookResponseDto updateDto) {
-        CreatedBookDto book = bookRepository.findById(id).orElseThrow(
+    public BookDto updateBookById(Long id, CreateBookRequestDto requestDto) {
+        Book book = bookRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Can't find book by id " + id));
-        bookMapper.updateBookFromDto(updateDto, book);
+        bookMapper.updateBookFromDto(requestDto, book);
         return bookMapper.toBookDto(bookRepository.save(book));
     }
 

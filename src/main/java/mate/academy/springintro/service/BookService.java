@@ -1,19 +1,19 @@
 package mate.academy.springintro.service;
 
 import mate.academy.springintro.dto.BookDto;
-import mate.academy.springintro.dto.BookRequestDto;
-import mate.academy.springintro.dto.BookResponseDto;
+import mate.academy.springintro.dto.CreateBookRequestDto;
+
 
 import java.util.List;
 
 public interface BookService {
-    BookDto save(BookRequestDto requestDto);
+    BookDto save(CreateBookRequestDto requestDto);
 
     List<BookDto> findAll();
 
     BookDto findById(Long id);
 
-    BookDto updateBookById(Long id, BookResponseDto updateDto);
+    BookDto updateBookById(Long id, CreateBookRequestDto updateDto);
 
     void deleteById(Long id);
 }

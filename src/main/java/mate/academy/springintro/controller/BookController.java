@@ -3,8 +3,7 @@ package mate.academy.springintro.controller;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import mate.academy.springintro.dto.BookDto;
-import mate.academy.springintro.dto.BookRequestDto;
-import mate.academy.springintro.dto.BookResponseDto;
+import mate.academy.springintro.dto.CreateBookRequestDto;
 import mate.academy.springintro.service.BookService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,10 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/books")
+@RequestMapping("/bookshop")
 public class BookController {
 
-    private BookService bookService;
+    private final BookService bookService; // Внедрение через final и Lombok
 
     @GetMapping
     public List<BookDto> getAll() {
@@ -36,14 +35,14 @@ public class BookController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public BookDto createBook(@RequestBody BookRequestDto requestDto) {
+    public BookDto createBook(@RequestBody CreateBookRequestDto requestDto) {
         return bookService.save(requestDto);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public BookDto updateBookById(@PathVariable Long id,
-                                  @RequestBody BookResponseDto updateDto) {
+                                  @RequestBody CreateBookRequestDto updateDto) {
         return bookService.updateBookById(id, updateDto);
     }
 
