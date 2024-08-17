@@ -13,15 +13,19 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@RequiredArgsConstructor
 @Service
 public class BookServiceImpl implements BookService {
 
-    private final BookRepository bookRepository; // Внедрение через final и Lombok
-    private final BookMapper bookMapper; // Внедрение через final и Lombok
+    private final BookRepository bookRepository;
+    private final BookMapper bookMapper;
+
+    public BookServiceImpl(BookRepository bookRepository, BookMapper bookMapper){
+        this.bookRepository = bookRepository;
+        this.bookMapper = bookMapper;
+    }
 
     @Override
-    public BookDto save(CreateBookRequestDto requestDto) { // Изменен параметр на CreateBookRequestDto
+    public BookDto save(CreateBookRequestDto requestDto) {
         Book book = bookMapper.toModel(requestDto);
         return bookMapper.toBookDto(bookRepository.save(book));
     }

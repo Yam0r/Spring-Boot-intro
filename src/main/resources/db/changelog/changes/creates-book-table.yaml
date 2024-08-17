@@ -4,7 +4,7 @@ databaseChangeLog:
       author: mateacademy
       changes:
         - createTable:
-            tableName: bookshop
+            tableName: books
             columns:
               - column:
                   name: id
@@ -35,7 +35,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: description
-                  type: text
+                  type: varchar(255)
               - column:
                   name: cover_image
                   type: varchar(255)

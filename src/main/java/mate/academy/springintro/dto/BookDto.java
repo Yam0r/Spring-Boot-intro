@@ -1,9 +1,13 @@
 package mate.academy.springintro.dto;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 
+@Getter
+@Setter
 @Data
 public class BookDto {
     private Long id;
