@@ -1,6 +1,5 @@
 package mate.academy.springintro.service.impl;
 
-import lombok.RequiredArgsConstructor;
 import mate.academy.springintro.dto.CreateBookRequestDto;
 import mate.academy.springintro.model.Book;
 import mate.academy.springintro.dto.BookDto;
@@ -32,8 +31,9 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<BookDto> findAll() {
-        List<Book> books = bookRepository.findAll();
-        return books.stream().map(bookMapper::toBookDto).collect(Collectors.toList());
+        return bookRepository.findAll().stream()
+                .map(bookMapper::toBookDto)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -44,11 +44,11 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public BookDto updateBookById(Long id, CreateBookRequestDto requestDto) {
+    public void updateBookById(Long id, CreateBookRequestDto requestDto) {
         Book book = bookRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Can't find book by id " + id));
         bookMapper.updateBookFromDto(requestDto, book);
-        return bookMapper.toBookDto(bookRepository.save(book));
+        bookRepository.save(book);
     }
 
     @Override
