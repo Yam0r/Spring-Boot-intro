@@ -1,18 +1,22 @@
 package mate.academy.springintro.model;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import java.math.BigDecimal;
-
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
-
-import javax.validation.constraints.NotNull;
+import org.hibernate.annotations.Where;
 
 @Entity
 @Getter
 @Setter
 @SQLDelete(sql = "UPDATE bookshop SET is_deleted = true WHERE id=?")
+@Where(clause = "is_deleted = false")
 @Table(name = "bookshop")
 public class Book {
     @Id
@@ -34,6 +38,6 @@ public class Book {
     private String description;
     private String coverImage;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TINYINT")
     private boolean isDeleted;
 }
