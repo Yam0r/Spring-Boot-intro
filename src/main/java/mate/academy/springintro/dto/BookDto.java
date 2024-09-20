@@ -13,5 +13,6 @@ public class BookDto {
     private String isbn;
     private BigDecimal price;
     private String description;
+
     private String coverImage;
 }

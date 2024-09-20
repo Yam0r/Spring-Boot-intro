@@ -19,7 +19,8 @@ public class BookSpecificationBuilder implements SpecificationBuilder<Book> {
         Specification<Book> spec = Specification.where(null);
         if (bookSearchParameters.author() != null && bookSearchParameters.author().length > 0) {
             spec = spec.and(bookSpecificationProviderManager.getSpecificationProvider("author")
-                    .getSpecification(bookSearchParameters.author()));
+                    .getSpecification(
+                            bookSearchParameters.author()));
         }
         if (bookSearchParameters.price() != null && bookSearchParameters.price().length > 0) {
             spec = spec.and(bookSpecificationProviderManager.getSpecificationProvider("price")
