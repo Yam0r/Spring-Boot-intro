@@ -1,5 +1,6 @@
 package mate.academy.springintro.controller;
 
+import jakarta.validation.Valid;
 import java.util.List;
 import mate.academy.springintro.dto.BookDto;
 import mate.academy.springintro.dto.BookSearchParameters;
@@ -37,12 +38,13 @@ public class BookController {
     }
 
     @PostMapping
-    public BookDto createBook(@RequestBody CreateBookRequestDto requestDto) {
+    public BookDto createBook(@RequestBody @Valid CreateBookRequestDto requestDto) {
         return bookService.save(requestDto);
     }
 
     @PutMapping("/{id}")
-    public void updateBookById(@PathVariable Long id, @RequestBody CreateBookRequestDto updateDto) {
+    public void updateBookById(@PathVariable Long id,
+                               @RequestBody @Valid CreateBookRequestDto updateDto) {
         bookService.updateBookById(id, updateDto);
     }
 
