@@ -1,5 +1,7 @@
 package mate.academy.springintro.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -7,8 +9,10 @@ import mate.academy.springintro.dto.BookDto;
 import mate.academy.springintro.dto.BookSearchParameters;
 import mate.academy.springintro.dto.CreateBookRequestDto;
 import mate.academy.springintro.service.BookService;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -16,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "Bookshop management", description = "Endpoints for bookshop")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/books")
@@ -24,8 +29,9 @@ public class BookController {
     private final BookService bookService;
 
     @GetMapping
-    public List<BookDto> getAll() {
-        return bookService.findAll();
+    @Operation(summary = "Get all books", description = "Get a list of all available books")
+    public List<BookDto> getAll(Pageable pageable) {
+        return bookService.findAll(pageable);
     }
 
     @GetMapping("/{id}")
@@ -34,6 +40,7 @@ public class BookController {
     }
 
     @PostMapping
+    @Operation(summary = "Create a new books", description = "Create a new books")
     public BookDto createBook(@RequestBody @Valid CreateBookRequestDto requestDto) {
         return bookService.save(requestDto);
     }
@@ -50,7 +57,7 @@ public class BookController {
     }
 
     @GetMapping("/search")
-    public List<BookDto> search(BookSearchParameters searchParameters) {
+    public List<BookDto> search(@ModelAttribute BookSearchParameters searchParameters) {
         return bookService.search(searchParameters);
     }
 }
