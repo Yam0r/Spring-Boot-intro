@@ -1,17 +1,23 @@
 package mate.academy.springintro.mapper;
 
-import mate.academy.springintro.config.MapperConfig;
+import java.util.List;
 import mate.academy.springintro.dto.BookDto;
-import mate.academy.springintro.dto.CreateBookRequestDto;
-import mate.academy.springintro.model.Book;
-import org. mapstruct.Mapper;
+import mate.academy.springintro.dto.BookRequestDto;
+import mate.academy.springintro.dto.BookResponseDto;
+import mate.academy.springintro.model.CreatedBookDto;
+import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.ReportingPolicy;
 
-@Mapper(config = MapperConfig.class)
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface BookMapper {
-    BookDto toBookDto(Book book);
+    BookDto toBookDto(CreatedBookDto book);
 
-    Book toModel(CreateBookRequestDto requestDto);
+    List<BookDto> toBookDto(List<CreatedBookDto> book);
 
-    void updateBookFromDto(CreateBookRequestDto requestDto, @MappingTarget Book entity);
+    CreatedBookDto toModel(BookRequestDto requestDto);
+
+    void updateBookFromDto(BookResponseDto book, @MappingTarget CreatedBookDto entity);
 }
+
+
