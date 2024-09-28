@@ -1,22 +1,28 @@
 package mate.academy.springintro.controller;
 
-import lombok.RequiredArgsConstructor;
-import mate.academy.springintro.dto.BookDto;
-import mate.academy.springintro.dto.BookRequestDto;
-import mate.academy.springintro.dto.BookResponseDto;
-import mate.academy.springintro.service.BookService;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
-
+import jakarta.validation.Valid;
 import java.util.List;
+import mate.academy.springintro.dto.BookDto;
+import mate.academy.springintro.dto.BookSearchParameters;
+import mate.academy.springintro.dto.CreateBookRequestDto;
+import mate.academy.springintro.service.BookService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-//@RequiredArgsConstructor
 @RestController
-@RequestMapping("/books")
+@RequestMapping("/bookshop")
 public class BookController {
 
     private final BookService bookService;
 
+    @Autowired
     public BookController(BookService bookService) {
         this.bookService = bookService;
     }
@@ -32,21 +38,23 @@ public class BookController {
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public BookDto createBook(@RequestBody BookRequestDto requestDto) {
+    public BookDto createBook(@RequestBody @Valid CreateBookRequestDto requestDto) {
         return bookService.save(requestDto);
     }
 
     @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public BookDto updateBookById(@PathVariable Long id,
-                                  @RequestBody BookResponseDto updateDto) {
-        return bookService.updateBookById(id, updateDto);
+    public void updateBookById(@PathVariable Long id,
+                               @RequestBody @Valid CreateBookRequestDto updateDto) {
+        bookService.updateBookById(id, updateDto);
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteBookById(@PathVariable Long id) {
         bookService.deleteById(id);
+    }
+
+    @GetMapping("/search")
+    public List<BookDto> search(BookSearchParameters searchParameters) {
+        return bookService.search(searchParameters);
     }
 }

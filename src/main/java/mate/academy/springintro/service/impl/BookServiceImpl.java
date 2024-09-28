@@ -1,55 +1,73 @@
 package mate.academy.springintro.service.impl;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import mate.academy.springintro.model.CreatedBookDto;
 import mate.academy.springintro.dto.BookDto;
-import mate.academy.springintro.dto.BookRequestDto;
-import mate.academy.springintro.dto.BookResponseDto;
+import mate.academy.springintro.dto.BookSearchParameters;
+import mate.academy.springintro.dto.CreateBookRequestDto;
 import mate.academy.springintro.exception.EntityNotFoundException;
 import mate.academy.springintro.mapper.BookMapper;
-import mate.academy.springintro.repository.BookRepository;
+import mate.academy.springintro.model.Book;
+import mate.academy.springintro.repository.book.BookRepository;
+import mate.academy.springintro.repository.book.BookSpecificationBuilder;
 import mate.academy.springintro.service.BookService;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 @Service
 public class BookServiceImpl implements BookService {
-    private static final String MESSAGE = "Can't find book by id";
 
     private final BookRepository bookRepository;
     private final BookMapper bookMapper;
+    private final BookSpecificationBuilder bookSpecificationBuilder;
 
-    @Override
-    public BookDto save(BookRequestDto requestDto) {
-        CreatedBookDto book = bookMapper.toModel(requestDto);
-        return bookMapper.toBookDto(bookRepository.save(book));
+    public BookServiceImpl(BookRepository bookRepository, BookMapper bookMapper,
+                           BookSpecificationBuilder bookSpecificationBuilder) {
+        this.bookRepository = bookRepository;
+        this.bookMapper = bookMapper;
+        this.bookSpecificationBuilder = bookSpecificationBuilder;
     }
 
     @Override
-    public List<BookDto> findAll() {
-        List<CreatedBookDto> books = bookRepository.findAll();
-        return books.stream().map(bookMapper::toBookDto).collect(Collectors.toList());
-    }
-
-    @Override
-    public BookDto findById(Long id) {
-        CreatedBookDto book = bookRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException(MESSAGE + id));
+    public BookDto save(CreateBookRequestDto requestDto) {
+        Book book = bookMapper.toModel(requestDto);
+        book = bookRepository.save(book);
         return bookMapper.toBookDto(book);
     }
 
     @Override
-    public BookDto updateBookById(Long id, BookResponseDto updateDto) {
-        CreatedBookDto book = bookRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException(MESSAGE + id));
-        bookMapper.updateBookFromDto(updateDto, book);
-        return bookMapper.toBookDto(bookRepository.save(book));
+    public List<BookDto> findAll() {
+        return bookRepository.findAll().stream()
+                .map(bookMapper::toBookDto)
+                .toList();
+    }
+
+    @Override
+    public BookDto findById(Long id) {
+        Book book = bookRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException(
+                        "Can't find book by id " + id));
+        return bookMapper.toBookDto(book);
+    }
+
+    @Override
+    public void updateBookById(Long id, CreateBookRequestDto requestDto) {
+        Book book = bookRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException(
+                        "Can't find book by id " + id));
+        bookMapper.updateBookFromDto(requestDto, book);
+        bookRepository.save(book);
     }
 
     @Override
     public void deleteById(Long id) {
         bookRepository.deleteById(id);
+    }
+
+    @Override
+    public List<BookDto> search(BookSearchParameters params) {
+        Specification<Book> bookSpecification = bookSpecificationBuilder.build(params);
+        return bookRepository.findAll(bookSpecification).stream()
+                .map(bookMapper::toBookDto)
+                .toList();
     }
 }
