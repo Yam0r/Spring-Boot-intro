@@ -7,12 +7,10 @@ import mate.academy.springintro.dto.BookSearchParameters;
 import mate.academy.springintro.dto.CreateBookRequestDto;
 import mate.academy.springintro.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,8 +27,8 @@ public class BookController {
     }
 
     @GetMapping
-    public List<BookDto> getAll(Pageable pageable) {
-        return bookService.findAll(pageable);
+    public List<BookDto> getAll() {
+        return bookService.findAll();
     }
 
     @GetMapping("/{id}")
@@ -41,12 +39,6 @@ public class BookController {
     @PostMapping
     public BookDto createBook(@RequestBody @Valid CreateBookRequestDto requestDto) {
         return bookService.save(requestDto);
-    }
-
-    @PutMapping("/{id}")
-    public void updateBookById(@PathVariable Long id,
-                               @RequestBody @Valid CreateBookRequestDto updateDto) {
-        bookService.updateBookById(id, updateDto);
     }
 
     @DeleteMapping("/{id}")
