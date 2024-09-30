@@ -8,6 +8,8 @@ import mate.academy.springintro.dto.CreateBookRequestDto;
 public interface BookService {
     BookDto save(CreateBookRequestDto requestDto);
 
+    void updateBookById(Long id, CreateBookRequestDto updateDto);
+
     List<BookDto> findAll();
 
     BookDto findById(Long id);
