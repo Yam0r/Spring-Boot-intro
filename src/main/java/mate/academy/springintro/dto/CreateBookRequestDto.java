@@ -19,11 +19,10 @@ public class CreateBookRequestDto {
     @NotBlank(message = "ISBN cannot be null")
     private String isbn;
 
-    @NotBlank
+    @NotNull
     @Min(value = 0)
     private BigDecimal price;
 
-    @NotNull
     private String description;
 
     @NotBlank
