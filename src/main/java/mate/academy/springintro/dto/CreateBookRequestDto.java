@@ -23,7 +23,6 @@ public class CreateBookRequestDto {
     @Min(value = 0)
     private BigDecimal price;
 
-    @NotBlank
     private String description;
 
     @NotBlank
