@@ -19,14 +19,12 @@ public class BookSpecificationBuilder implements SpecificationBuilder<Book> {
     @Override
     public Specification<Book> build(BookSearchParameters bookSearchParameters) {
         Specification<Book> spec = Specification.where(null);
-        if (bookSearchParameters.author() != null
-                && bookSearchParameters.author().length > 0) {
+        if (bookSearchParameters.author() != null && bookSearchParameters.author().length > 0) {
             spec = spec.and(bookSpecificationProviderManager
                     .getSpecificationProvider(AUTHOR_PARAMETER)
                     .getSpecification(bookSearchParameters.author()));
         }
-        if (bookSearchParameters.price() != null
-                && bookSearchParameters.price().length > 0) {
+        if (bookSearchParameters.price() != null && bookSearchParameters.price().length > 0) {
             spec = spec.and(bookSpecificationProviderManager
                     .getSpecificationProvider(PRICE_PARAMETER)
                     .getSpecification(bookSearchParameters.price()));

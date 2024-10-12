@@ -25,6 +25,5 @@ public class CreateBookRequestDto {
 
     private String description;
 
-    @NotBlank
     private String coverImage;
 }

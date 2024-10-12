@@ -11,9 +11,7 @@ public class PriceSpecificationProvider implements SpecificationProvider<Book> {
     private static final String PRICE_PARAMETER = "price";
 
     public Specification<Book> getSpecification(String[] params) {
-        return (root,
-                query,
-                criteriaBuilder) -> root.get(PRICE_PARAMETER)
+        return (root, query, criteriaBuilder) -> root.get(PRICE_PARAMETER)
                 .in(Arrays.stream(params).toArray());
     }
 
