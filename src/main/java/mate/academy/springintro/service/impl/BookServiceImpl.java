@@ -1,6 +1,7 @@
 package mate.academy.springintro.service.impl;
 
 import java.util.List;
+import lombok.AllArgsConstructor;
 import mate.academy.springintro.dto.BookDto;
 import mate.academy.springintro.dto.BookSearchParameters;
 import mate.academy.springintro.dto.CreateBookRequestDto;
@@ -13,19 +14,13 @@ import mate.academy.springintro.service.BookService;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+@AllArgsConstructor
 @Service
 public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
     private final BookMapper bookMapper;
     private final BookSpecificationBuilder bookSpecificationBuilder;
-
-    public BookServiceImpl(BookRepository bookRepository, BookMapper bookMapper,
-                           BookSpecificationBuilder bookSpecificationBuilder) {
-        this.bookRepository = bookRepository;
-        this.bookMapper = bookMapper;
-        this.bookSpecificationBuilder = bookSpecificationBuilder;
-    }
 
     @Override
     public BookDto save(CreateBookRequestDto requestDto) {
