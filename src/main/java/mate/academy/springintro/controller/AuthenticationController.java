@@ -20,7 +20,7 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/registration")
-    public UserResponseDto registerUser(@RequestBody UserRegistrationRequestDto requestDto)  // Измените @RequestParam на @RequestBody
+    public UserResponseDto registerUser(@RequestBody UserRegistrationRequestDto requestDto)
             throws RegistrationException {
         return userService.register(requestDto);
     }

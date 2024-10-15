@@ -6,7 +6,7 @@ import mate.academy.springintro.model.User;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserMapperImpl implements UserMapper{
+public class UserMapperImpl implements UserMapper {
     @Override
     public UserResponseDto toUserResponse(User savedUser) {
         UserResponseDto responseDto = new UserResponseDto();
