@@ -4,9 +4,6 @@ import java.util.List;
 import mate.academy.springintro.dto.book.BookDto;
 import mate.academy.springintro.dto.book.BookSearchParameters;
 import mate.academy.springintro.dto.book.CreateBookRequestDto;
-import mate.academy.springintro.dto.BookDto;
-import mate.academy.springintro.dto.BookSearchParameters;
-import mate.academy.springintro.dto.CreateBookRequestDto;
 import org.springframework.data.domain.Pageable;
 
 public interface BookService {
