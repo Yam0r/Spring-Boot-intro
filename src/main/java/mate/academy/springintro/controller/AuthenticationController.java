@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth")
 public class AuthenticationController {
     private final UserService userService;
-    //private final AuthenticationService authenticationService;
 
     @Operation(summary = "Get book by ID", description = "Retrieve a single book by its ID")
     @PostMapping("/registration")
@@ -27,10 +26,4 @@ public class AuthenticationController {
             throws RegistrationException {
         return userService.register(requestDto);
     }
-
-    // Corrected comment indentation
-    // @PostMapping("/login")
-    // public boolean login(@RequestBody UserLoginRequestDto requestDto) {
-    //     return authenticationService.authenticate(requestDto);
-    // }
 }
