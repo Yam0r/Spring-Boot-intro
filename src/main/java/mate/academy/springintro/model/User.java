@@ -25,12 +25,11 @@ public class User {
     private String email;
     @Column(nullable = false)
     private String password;
-    @Column(name = "is_deleted", nullable = false)
+    @Column(nullable = false)
     private boolean isDeleted;
     @Column(nullable = false)
     private String firstName;
     @Column(nullable = false)
     private String lastName;
-
     private String shippingAddress;
 }
