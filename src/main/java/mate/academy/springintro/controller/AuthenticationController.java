@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthenticationController {
     private final UserService userService;
 
-    @Operation(summary = "Get book by ID", description = "Retrieve a single book by its ID")
+    @Operation(summary = "User Registration", description = "Register a new user in the system")
     @PostMapping("/registration")
     public UserResponseDto registerUser(@RequestBody @Valid UserRegistrationRequestDto requestDto)
             throws RegistrationException {
