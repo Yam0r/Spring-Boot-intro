@@ -13,20 +13,25 @@ import mate.academy.springintro.rolerepository.RoleRepository;
 import mate.academy.springintro.service.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
+    private static final String NOT_REGISTRATION_EMAIL_MESSAGE = "Can't register user:";
+    private static final String NOT_FOUND_ROLE = "Role USER not found in the database:";
+
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
 
     @Override
+    @Transactional
     public UserResponseDto register(UserRegistrationRequestDto requestDto)
             throws RegistrationException {
         if (userRepository.existsByEmail(requestDto.getEmail())) {
-            throw new RegistrationException("Can't register user");
+            throw new RegistrationException(NOT_REGISTRATION_EMAIL_MESSAGE);
         }
 
         User user = userMapper.toUser(requestDto);
@@ -34,7 +39,7 @@ public class UserServiceImpl implements UserService {
 
         Role userRole = roleRepository.findByRole(Role.RoleName.USER)
                 .orElseThrow(() ->
-                        new IllegalStateException("Role USER not found in the database"));
+                        new IllegalStateException(NOT_FOUND_ROLE));
 
         user.setRoles(Set.of(userRole));
 

@@ -1,5 +1,6 @@
 package mate.academy.springintro.security;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import mate.academy.springintro.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,6 +17,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException(NOT_FOUND_EMAIL_MESSAGE));
+                .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND_EMAIL_MESSAGE));
     }
 }
