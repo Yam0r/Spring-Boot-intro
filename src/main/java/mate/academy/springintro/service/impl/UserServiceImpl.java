@@ -1,5 +1,6 @@
 package mate.academy.springintro.service.impl;
 
+import jakarta.persistence.EntityNotFoundException;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import mate.academy.springintro.dto.user.UserRegistrationRequestDto;
@@ -36,10 +37,9 @@ public class UserServiceImpl implements UserService {
 
         User user = userMapper.toUser(requestDto);
         user.setPassword(passwordEncoder.encode(requestDto.getPassword()));
-
         Role userRole = roleRepository.findByRole(Role.RoleName.USER)
                 .orElseThrow(() ->
-                        new IllegalStateException(NOT_FOUND_ROLE));
+                        new EntityNotFoundException(NOT_FOUND_ROLE));
 
         user.setRoles(Set.of(userRole));
 
