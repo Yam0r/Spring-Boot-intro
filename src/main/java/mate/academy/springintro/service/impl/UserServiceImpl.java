@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private static final String NOT_REGISTRATION_EMAIL_MESSAGE = "Can't register user:";
-    private static final String NOT_FOUND_ROLE = "Role USER not found in the database:";
+    private static final String NOT_FOUND_ROLE = "Role %s not found in the database:";
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
@@ -37,12 +37,12 @@ public class UserServiceImpl implements UserService {
 
         User user = userMapper.toUser(requestDto);
         user.setPassword(passwordEncoder.encode(requestDto.getPassword()));
+
+        String roleName = Role.RoleName.USER.name();
         Role userRole = roleRepository.findByRole(Role.RoleName.USER)
-                .orElseThrow(() ->
-                        new EntityNotFoundException(NOT_FOUND_ROLE));
+                .orElseThrow(() -> new EntityNotFoundException(String.format(NOT_FOUND_ROLE + roleName)));
 
         user.setRoles(Set.of(userRole));
-
         userRepository.save(user);
         return userMapper.toUserResponse(user);
     }
