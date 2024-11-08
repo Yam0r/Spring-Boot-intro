@@ -40,7 +40,8 @@ public class UserServiceImpl implements UserService {
 
         String roleName = Role.RoleName.USER.name();
         Role userRole = roleRepository.findByRole(Role.RoleName.USER)
-                .orElseThrow(() -> new EntityNotFoundException(String.format(NOT_FOUND_ROLE + roleName)));
+                .orElseThrow(() -> new EntityNotFoundException(String.format(NOT_FOUND_ROLE
+                        + roleName)));
 
         user.setRoles(Set.of(userRole));
         userRepository.save(user);
