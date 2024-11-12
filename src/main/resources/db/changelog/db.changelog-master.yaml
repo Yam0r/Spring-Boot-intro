@@ -5,3 +5,15 @@ databaseChangeLog:
       file: db/changelog/changes/create-users-table.yaml
   - include:
       file: db/changelog/changes/insert-users.yaml
+  - include:
+      file: db/changelog/changes/set-bcrypt-password.yaml
+  - include:
+      file: db/changelog/changes/create-roles-table.yaml
+  - include:
+      file: db/changelog/changes/create-users-roles-table.yaml
+  - include:
+      file: db/changelog/changes/insert-roles.yaml
+  - include:
+      file: db/changelog/changes/insert-roles-of-users.yaml.
+  - include:
+      file: db/changelog/changes/assign-roles-to-users.yaml

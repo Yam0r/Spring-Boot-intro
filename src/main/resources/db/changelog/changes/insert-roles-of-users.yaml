@@ -1,0 +1,23 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-roles
+      author: mateacademy
+      changes:
+        - insert:
+            tableName: users_roles
+            columns:
+              - column:
+                  name: user_id
+                  value: "13"
+              - column:
+                  name: role_id
+                  value: "2"
+        - insert:
+            tableName: users_roles
+            columns:
+              - column:
+                  name: user_id
+                  value: "14"
+              - column:
+                  name: role_id
+                  value: "2"
