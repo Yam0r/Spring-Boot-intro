@@ -26,4 +26,6 @@ public class CreateBookRequestDto {
     private String description;
 
     private String coverImage;
+
+    private String categoryName;
 }
