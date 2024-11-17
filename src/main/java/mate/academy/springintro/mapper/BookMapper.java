@@ -1,5 +1,6 @@
 package mate.academy.springintro.mapper;
 
+import java.util.stream.Collectors;
 import mate.academy.springintro.config.MapperConfig;
 import mate.academy.springintro.dto.book.BookDto;
 import mate.academy.springintro.dto.book.CreateBookRequestDto;
@@ -8,8 +9,6 @@ import mate.academy.springintro.model.Category;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
-
-import java.util.stream.Collectors;
 
 @Mapper(config = MapperConfig.class)
 public interface BookMapper {

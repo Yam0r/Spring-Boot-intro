@@ -42,7 +42,6 @@ public class BookServiceImpl implements BookService {
         return bookMapper.toBookDto(book);
     }
 
-
     @Override
     public List<BookDto> findAll(Pageable pageable) {
         List<Book> books = bookRepository.findAll();

@@ -1,6 +1,8 @@
 package mate.academy.springintro.service.impl;
 
 import jakarta.persistence.EntityNotFoundException;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import mate.academy.springintro.dto.book.CategoryDto;
 import mate.academy.springintro.mapper.CategoryMapper;
@@ -9,12 +11,9 @@ import mate.academy.springintro.repository.CategoryRepository;
 import mate.academy.springintro.service.CategoryService;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @RequiredArgsConstructor
 @Service
-public class CategoryServiceImpl implements CategoryService{
+public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
 
@@ -56,4 +55,3 @@ public class CategoryServiceImpl implements CategoryService{
         categoryRepository.save(category);
     }
 }
-
