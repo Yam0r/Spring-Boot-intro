@@ -12,7 +12,6 @@ import mate.academy.springintro.dto.book.CreateBookRequestDto;
 import mate.academy.springintro.service.BookService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -35,8 +34,7 @@ public class BookController {
     @Operation(summary = "Get all books",
             description = "Retrieve a paginated list of all available books")
     public List<BookDto> getAll(Pageable pageable) {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        return bookService.findAll(pageable, email);
+        return bookService.findAll(pageable);
     }
 
     @PreAuthorize("hasAuthority('USER') or hasAuthority('ADMIN')")
