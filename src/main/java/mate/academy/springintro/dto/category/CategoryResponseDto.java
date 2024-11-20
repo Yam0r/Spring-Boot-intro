@@ -1,11 +1,11 @@
-package mate.academy.springintro.dto.book;
+package mate.academy.springintro.dto.category;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class CategoryDto {
+public class CategoryResponseDto {
     private Long id;
     private String name;
     private String description;

@@ -1,10 +1,12 @@
 package mate.academy.springintro.service.impl;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import mate.academy.springintro.dto.book.CategoryDto;
+import mate.academy.springintro.dto.category.CategoryRequestDto;
+import mate.academy.springintro.dto.category.CategoryResponseDto;
 import mate.academy.springintro.mapper.CategoryMapper;
 import mate.academy.springintro.model.Category;
 import mate.academy.springintro.repository.CategoryRepository;
@@ -18,40 +20,41 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryMapper categoryMapper;
 
     @Override
-    public List<CategoryDto> findAll() {
-        return categoryRepository.findAllByDeletedFalse().stream()
+    public List<CategoryResponseDto> findAll() {
+        return categoryRepository.findAll().stream()
                 .map(categoryMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public CategoryDto getById(Long id) {
+    public CategoryResponseDto getById(Long id) {
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Category not found"));
         return categoryMapper.toDto(category);
     }
 
     @Override
-    public CategoryDto save(CategoryDto categoryDto) {
-        Category category = categoryMapper.toEntity(categoryDto);
+    public CategoryResponseDto save(@Valid CategoryRequestDto categoryResponseDto) {
+        Category category = categoryMapper.toEntity(categoryResponseDto);
         category = categoryRepository.save(category);
         return categoryMapper.toDto(category);
     }
 
     @Override
-    public CategoryDto update(Long id, CategoryDto categoryDto) {
+    public CategoryResponseDto update(Long id, @Valid CategoryRequestDto categoryResponseDto) {
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Category not found"));
-        category.setName(categoryDto.getName());
-        category.setDescription(categoryDto.getDescription());
+
+        categoryMapper.updateCategoryFromDto(categoryResponseDto, category);
+
         return categoryMapper.toDto(categoryRepository.save(category));
     }
 
     @Override
     public void deleteById(Long id) {
-        Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Category not found"));
-        category.setDeleted(true);
-        categoryRepository.save(category);
+        if (!categoryRepository.existsById(id)) {
+            throw new EntityNotFoundException("Category not found");
+        }
+        categoryRepository.softDeleteById(id);
     }
 }

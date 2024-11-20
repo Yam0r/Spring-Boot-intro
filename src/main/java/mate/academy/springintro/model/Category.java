@@ -14,7 +14,7 @@ import org.hibernate.annotations.Where;
 @Getter
 @Setter
 @Where(clause = "is_deleted = FALSE")
-@Table(name = "category")
+@Table(name = "categories")
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,5 +26,5 @@ public class Category {
     private String description;
 
     @Column(nullable = false, name = "is_deleted")
-    private Boolean deleted = false;
+    private boolean deleted = false;
 }

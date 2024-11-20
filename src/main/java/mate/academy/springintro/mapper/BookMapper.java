@@ -3,7 +3,7 @@ package mate.academy.springintro.mapper;
 import java.util.stream.Collectors;
 import mate.academy.springintro.config.MapperConfig;
 import mate.academy.springintro.dto.book.BookDto;
-import mate.academy.springintro.dto.book.CreateBookRequestDto;
+import mate.academy.springintro.dto.category.CreateBookRequestDto;
 import mate.academy.springintro.model.Book;
 import mate.academy.springintro.model.Category;
 import org.mapstruct.AfterMapping;

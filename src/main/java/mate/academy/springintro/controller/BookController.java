@@ -8,7 +8,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import mate.academy.springintro.dto.book.BookDto;
 import mate.academy.springintro.dto.book.BookSearchParameters;
-import mate.academy.springintro.dto.book.CreateBookRequestDto;
+import mate.academy.springintro.dto.category.CreateBookRequestDto;
 import mate.academy.springintro.service.BookService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
