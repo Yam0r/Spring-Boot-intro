@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -46,8 +47,13 @@ public class CategoryController {
     @GetMapping
     @Operation(summary = "Get all categories",
             description = "Retrieve a list of all available book categories")
-    public List<CategoryResponseDto> getAll() {
-        return categoryService.findAll();
+    public List<CategoryResponseDto> getAll(
+            @Parameter(description = "Page number (0-based)")
+            @RequestParam(defaultValue = "0") int page,
+            @Parameter(description = "Page size")
+            @RequestParam(defaultValue = "10") int size) {
+
+        return categoryService.findAll(page, size);
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")

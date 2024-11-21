@@ -3,7 +3,6 @@ package mate.academy.springintro.service.impl;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import mate.academy.springintro.dto.category.CategoryRequestDto;
 import mate.academy.springintro.dto.category.CategoryResponseDto;
@@ -20,10 +19,10 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryMapper categoryMapper;
 
     @Override
-    public List<CategoryResponseDto> findAll() {
+    public List<CategoryResponseDto> findAll(int page, int size) {
         return categoryRepository.findAll().stream()
                 .map(categoryMapper::toDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
@@ -44,7 +43,6 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryResponseDto update(Long id, @Valid CategoryRequestDto categoryResponseDto) {
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Category not found"));
-
         categoryMapper.updateCategoryFromDto(categoryResponseDto, category);
 
         return categoryMapper.toDto(categoryRepository.save(category));
@@ -55,6 +53,6 @@ public class CategoryServiceImpl implements CategoryService {
         if (!categoryRepository.existsById(id)) {
             throw new EntityNotFoundException("Category not found");
         }
-        categoryRepository.softDeleteById(id);
+        categoryRepository.deleteById(id);
     }
 }

@@ -1,6 +1,5 @@
 package mate.academy.springintro.mapper;
 
-import java.util.stream.Collectors;
 import mate.academy.springintro.config.MapperConfig;
 import mate.academy.springintro.dto.book.BookDto;
 import mate.academy.springintro.dto.category.CreateBookRequestDto;
@@ -20,12 +19,13 @@ public interface BookMapper {
 
     @AfterMapping
     default void setCategoryIds(@MappingTarget BookDto bookDto, Book book) {
-        if (book.getCategories() != null) {
-            bookDto.setCategoryName(
-                    book.getCategories().stream()
-                            .map(Category::getName)
-                            .collect(Collectors.toList())
-            );
+        if (book.getCategories() == null) {
+            return;
         }
+        bookDto.setCategoryName(
+                book.getCategories().stream()
+                        .map(Category::getName)
+                        .toList()
+        );
     }
 }

@@ -23,8 +23,8 @@ import org.hibernate.annotations.Where;
 @Entity
 @Getter
 @Setter
-@SQLDelete(sql = "UPDATE books SET is_deleted = true WHERE id=?")
-@Where(clause = "is_deleted = FALSE")
+@SQLDelete(sql = "UPDATE books SET deleted = true WHERE id=?")
+@Where(clause = "deleted = FALSE")
 @Table(name = "books")
 public class Book {
     @Id
@@ -46,10 +46,11 @@ public class Book {
     private String description;
 
     private String coverImage;
-    @Column(nullable = false, columnDefinition = "TINYINT")
-    private boolean isDeleted;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @Column(nullable = false)
+    private boolean deleted = false;
+
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "book_category",
             joinColumns = @JoinColumn(name = "book_id"),
@@ -58,5 +59,5 @@ public class Book {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Set<Category> categories = new HashSet<>();
-
 }
+

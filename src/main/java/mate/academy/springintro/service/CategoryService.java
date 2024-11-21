@@ -6,7 +6,7 @@ import mate.academy.springintro.dto.category.CategoryRequestDto;
 import mate.academy.springintro.dto.category.CategoryResponseDto;
 
 public interface CategoryService {
-    List<CategoryResponseDto> findAll();
+    List<CategoryResponseDto> findAll(int page, int size);
 
     CategoryResponseDto getById(Long id);
 
