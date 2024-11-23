@@ -22,9 +22,9 @@ public interface BookMapper {
         if (book.getCategories() == null) {
             return;
         }
-        bookDto.setCategoryName(
+        bookDto.setCategoryIds(
                 book.getCategories().stream()
-                        .map(Category::getName)
+                        .map(Category::getId)
                         .toList()
         );
     }

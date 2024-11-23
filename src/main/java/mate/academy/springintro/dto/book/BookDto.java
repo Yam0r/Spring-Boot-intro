@@ -22,5 +22,5 @@ public class BookDto {
 
     private String coverImage;
 
-    private List<String> categoryName;
+    private List<Long> categoryIds;
 }
