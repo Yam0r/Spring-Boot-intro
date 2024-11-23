@@ -1,7 +1,6 @@
 package mate.academy.springintro.service.impl;
 
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import mate.academy.springintro.dto.category.CategoryRequestDto;
@@ -39,14 +38,14 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryResponseDto save(@Valid CategoryRequestDto categoryResponseDto) {
+    public CategoryResponseDto save(CategoryRequestDto categoryResponseDto) {
         Category category = categoryMapper.toEntity(categoryResponseDto);
         categoryRepository.save(category);
         return categoryMapper.toDto(category);
     }
 
     @Override
-    public CategoryResponseDto update(Long id, @Valid CategoryRequestDto categoryResponseDto) {
+    public CategoryResponseDto update(Long id, CategoryRequestDto categoryResponseDto) {
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Category with id "
                         + id

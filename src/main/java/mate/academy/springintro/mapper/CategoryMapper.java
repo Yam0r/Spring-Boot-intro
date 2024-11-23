@@ -1,6 +1,5 @@
 package mate.academy.springintro.mapper;
 
-import jakarta.validation.Valid;
 import mate.academy.springintro.dto.category.CategoryRequestDto;
 import mate.academy.springintro.dto.category.CategoryResponseDto;
 import mate.academy.springintro.model.Category;
@@ -13,6 +12,6 @@ public interface CategoryMapper {
 
     Category toEntity(CategoryRequestDto categoryResponseDto);
 
-    void updateCategoryFromDto(@Valid CategoryRequestDto categoryResponseDto,
+    void updateCategoryFromDto(CategoryRequestDto categoryResponseDto,
                                @MappingTarget Category category);
 }
