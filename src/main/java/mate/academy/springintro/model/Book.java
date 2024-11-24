@@ -47,7 +47,7 @@ public class Book {
     private String coverImage;
 
     @Column(nullable = false)
-    private boolean deleted = false;
+    private boolean isDeleted = false;
 
     @ManyToMany
     @JoinTable(

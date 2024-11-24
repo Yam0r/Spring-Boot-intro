@@ -51,7 +51,6 @@ public class CategoryServiceImpl implements CategoryService {
                         + id
                         + " not found"));
         categoryMapper.updateCategoryFromDto(categoryResponseDto, category);
-
         return categoryMapper.toDto(categoryRepository.save(category));
     }
 
