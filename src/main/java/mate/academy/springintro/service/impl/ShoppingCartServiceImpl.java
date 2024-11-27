@@ -1,5 +1,6 @@
 package mate.academy.springintro.service.impl;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import mate.academy.springintro.dto.shoppingcart.AddToCartRequestDto;
 import mate.academy.springintro.dto.shoppingcart.ShoppingCartResponseDto;
@@ -25,11 +26,12 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     private final BookRepository bookRepository;
     private final UserRepository userRepository;
     private final ShoppingCartMapper shoppingCartMapper;
+    private final ShoppingCartService shoppingCartService;
 
     @Override
     public ShoppingCartResponseDto getCartForUser(Long userId) {
         ShoppingCart shoppingCart = shoppingCartRepository.findByUserId(userId)
-                .orElseThrow(() -> new RuntimeException("Shopping Cart not found for user "
+                .orElseThrow(() -> new EntityNotFoundException("Shopping Cart not found for user "
                         + userId));
         return shoppingCartMapper.toShoppingCartResponseDto(shoppingCart);
     }
@@ -38,7 +40,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Transactional
     public ShoppingCartResponseDto addToCart(Long userId, AddToCartRequestDto requestDto) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found with id " + userId));
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id " 
+                        + userId));
         ShoppingCart shoppingCart = shoppingCartRepository.findByUserId(userId)
                 .orElseGet(() -> createShoppingCartForUser(user));
         Book book = bookRepository.findById(requestDto.getBookId())
@@ -73,10 +76,11 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         cartItemRepository.delete(cartItem);
     }
 
-    private ShoppingCart createShoppingCartForUser(User user) {
+    @Override
+    @Transactional
+    public ShoppingCart createShoppingCartForUser(User user) {
         ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setUser(user);
-        shoppingCartRepository.save(shoppingCart);
-        return shoppingCart;
+        return shoppingCartRepository.save(shoppingCart);
     }
 }
