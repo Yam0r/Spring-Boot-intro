@@ -17,4 +17,3 @@ public interface ShoppingCartMapper {
     @Mapping(target = "bookId", source = "book.id")
     CartItemResponseDto toCartItemResponseDto(CartItem cartItem);
 }
-

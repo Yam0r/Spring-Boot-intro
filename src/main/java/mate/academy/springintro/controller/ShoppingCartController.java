@@ -7,7 +7,7 @@ import mate.academy.springintro.dto.shoppingcart.AddToCartRequestDto;
 import mate.academy.springintro.dto.shoppingcart.ShoppingCartResponseDto;
 import mate.academy.springintro.dto.shoppingcart.UpdateCartItemRequestDto;
 import mate.academy.springintro.model.User;
-import mate.academy.springintro.service.UserService;
+import mate.academy.springintro.service.ShoppingCartService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -26,13 +26,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @Tag(name = "Shopping Cart Management")
 public class ShoppingCartController {
-    private final UserService userService;
+    private final ShoppingCartService shoppingCartService;
 
     @GetMapping
     @PreAuthorize("hasAuthority('USER')")
     public ShoppingCartResponseDto getCartForUser(Authentication authentication) {
         Long userId = getUserIdFromAuth(authentication);
-        return userService.getCartForUser(userId);
+        return shoppingCartService.getCartForUser(userId);
     }
 
     @PostMapping
@@ -40,7 +40,7 @@ public class ShoppingCartController {
     public ShoppingCartResponseDto addToCart(Authentication authentication,
                                              @RequestBody @Valid AddToCartRequestDto requestDto) {
         Long userId = getUserIdFromAuth(authentication);
-        return userService.addToCart(userId, requestDto);
+        return shoppingCartService.addToCart(userId, requestDto);
     }
 
     @PutMapping("/items/{cartItemId}")
@@ -50,7 +50,7 @@ public class ShoppingCartController {
                                                   @RequestBody UpdateCartItemRequestDto
                                                               requestDto) {
         Long userId = getUserIdFromAuth(authentication);
-        return userService.updateCartItem(userId, cartItemId, requestDto);
+        return shoppingCartService.updateCartItem(userId, cartItemId, requestDto);
     }
 
     @DeleteMapping("/items/{cartItemId}")
@@ -59,7 +59,7 @@ public class ShoppingCartController {
     public void removeCartItem(Authentication authentication,
                                @PathVariable Long cartItemId) {
         Long userId = getUserIdFromAuth(authentication);
-        userService.removeCartItem(userId, cartItemId);
+        shoppingCartService.removeCartItem(userId, cartItemId);
     }
 
     private Long getUserIdFromAuth(Authentication authentication) {
