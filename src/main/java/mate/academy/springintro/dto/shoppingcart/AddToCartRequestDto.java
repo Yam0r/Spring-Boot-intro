@@ -14,4 +14,3 @@ public class AddToCartRequestDto {
     @Min(1)
     private int quantity;
 }
-

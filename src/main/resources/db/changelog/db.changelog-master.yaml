@@ -13,7 +13,3 @@ databaseChangeLog:
       file: db/changelog/changes/create-users-roles-table.yaml
   - include:
       file: db/changelog/changes/insert-category.yaml
-#  - include:
-#      file: db/changelog/changes/create-shopping-carts-table.yaml
-#  - include:
-#      file: db/changelog/changes/create-cart-items-table.yaml

@@ -29,4 +29,3 @@ databaseChangeLog:
                   type: boolean
                   constraints:
                     nullable: false
-
