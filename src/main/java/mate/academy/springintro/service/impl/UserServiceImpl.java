@@ -7,7 +7,9 @@ import mate.academy.springintro.dto.user.UserRegistrationRequestDto;
 import mate.academy.springintro.dto.user.UserResponseDto;
 import mate.academy.springintro.exception.RegistrationException;
 import mate.academy.springintro.mapper.UserMapper;
+import mate.academy.springintro.model.ShoppingCart;
 import mate.academy.springintro.model.User;
+import mate.academy.springintro.repository.ShoppingCartRepository;
 import mate.academy.springintro.repository.UserRepository;
 import mate.academy.springintro.rolerepository.Role;
 import mate.academy.springintro.rolerepository.RoleRepository;
@@ -21,11 +23,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserServiceImpl implements UserService {
     private static final String NOT_REGISTRATION_EMAIL_MESSAGE = "Can't register user:";
     private static final String NOT_FOUND_ROLE = "Role %s not found in the database:";
-
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
+    private final ShoppingCartRepository shoppingCartRepository;
 
     @Override
     @Transactional
@@ -34,17 +36,18 @@ public class UserServiceImpl implements UserService {
         if (userRepository.existsByEmail(requestDto.getEmail())) {
             throw new RegistrationException(NOT_REGISTRATION_EMAIL_MESSAGE);
         }
-
         User user = userMapper.toUser(requestDto);
         user.setPassword(passwordEncoder.encode(requestDto.getPassword()));
-
         String roleName = Role.RoleName.USER.name();
         Role userRole = roleRepository.findByRole(Role.RoleName.USER)
-                .orElseThrow(() -> new EntityNotFoundException(String.format(NOT_FOUND_ROLE
-                        + roleName)));
-
+                .orElseThrow(() -> new EntityNotFoundException(String.format(NOT_FOUND_ROLE,
+                        roleName)));
         user.setRoles(Set.of(userRole));
         userRepository.save(user);
+        ShoppingCart shoppingCart = new ShoppingCart();
+        shoppingCart.setUser(user);
+        shoppingCartRepository.save(shoppingCart);
         return userMapper.toUserResponse(user);
     }
 }
+

@@ -1,10 +1,10 @@
 databaseChangeLog:
   - changeSet:
-      id: create-users-table
+      id: create-shopping-carts
       author: mateacademy
       changes:
         - createTable:
-            tableName: users
+            tableName: shopping_carts
             columns:
               - column:
                   name: id
@@ -14,18 +14,20 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: email
-                  type: varchar(255)
+                  name: user_id
+                  type: bigint
                   constraints:
                     nullable: false
                     unique: true
-              - column:
-                  name: password
-                  type: varchar(255)
-                  constraints:
-                    nullable: false
               - column:
                   name: is_deleted
                   type: boolean
                   constraints:
                     nullable: false
+                    defaultValue: false
+        - addForeignKeyConstraint:
+            baseTableName: shopping_carts
+            baseColumnNames: user_id
+            referencedTableName: users
+            referencedColumnNames: id
+            onDelete: CASCADE
