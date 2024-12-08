@@ -9,7 +9,7 @@ services:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - MYSQL_DATABASE=${MYSQL_DATABASE}
     ports:
-      - "3307:3306"
+      - "${MYSQL_LOCAL_PORT}:${MYSQL_DOCKER_PORT}"
 
   app:
     depends_on:
@@ -20,7 +20,7 @@ services:
     image: posts-service
     env_file: .env
     ports:
-      - "8080:8080"
+      - "${SPRING_LOCAL_PORT}:${SPRING_DOCKER_PORT}"
     environment:
       SPRING_APPLICATION_JSON: >-
         {
