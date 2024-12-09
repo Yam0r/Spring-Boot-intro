@@ -137,6 +137,11 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-docker-compose</artifactId>
+		</dependency>
+
+		<dependency>
 			<groupId>org.hibernate.validator</groupId>
 			<artifactId>hibernate-validator</artifactId>
 		</dependency>
@@ -171,6 +176,17 @@
 				</configuration>
 			</plugin>
 
+
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<layers>
+						<enabled>true</enabled>
+					</layers>
+				</configuration>
+			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
@@ -191,20 +207,6 @@
 					<sourceDirectories>src</sourceDirectories>
 				</configuration>
 			</plugin>
-
-			<plugin>
-				<groupId>org.liquibase</groupId>
-				<artifactId>liquibase-maven-plugin</artifactId>
-				<version>4.27.0</version>
-				<configuration>
-					<url>jdbc:mysql://localhost:3306/books</url>
-					<username>Admin</username>
-					<password>admin</password>
-					<driver>com.mysql.cj.jdbc.Driver</driver>
-					<changeLogFile>src/main/resources/db/changelog/db.changelog-master.yaml</changeLogFile>
-				</configuration>
-			</plugin>
-
 
 		</plugins>
 	</build>
