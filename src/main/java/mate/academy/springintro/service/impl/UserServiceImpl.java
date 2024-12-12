@@ -49,11 +49,5 @@ public class UserServiceImpl implements UserService {
         shoppingCartRepository.save(shoppingCart);
         return userMapper.toUserResponse(user);
     }
-
-    @Override
-    public User findById(Long id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
-    }
 }
 

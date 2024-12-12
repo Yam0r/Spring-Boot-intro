@@ -1,16 +1,21 @@
 package mate.academy.springintro.service;
 
-import java.util.List;
-import java.util.Set;
-import mate.academy.springintro.model.Order;
-import mate.academy.springintro.model.OrderItem;
-import mate.academy.springintro.model.OrderStatus;
+import mate.academy.springintro.dto.order.OrderItemResponseDto;
+import mate.academy.springintro.dto.order.OrderRequestDto;
+import mate.academy.springintro.dto.order.OrderResponseDto;
+import mate.academy.springintro.dto.order.UpdateOrderStatusRequest;
+import mate.academy.springintro.model.User;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface OrderService {
-    Order placeOrder(Long userId, String shippingAddress, Set<OrderItem> orderItems);
+    OrderResponseDto placeOrder(User user, OrderRequestDto requestDto);
 
-    List<Order> getUserOrders(Long userId, Pageable pageable);
+    Page<OrderResponseDto> getOrderHistory(Long id, Pageable pageable);
 
-    Order updateOrderStatus(Long orderId, OrderStatus status);
+    Page<OrderItemResponseDto> getOrderItems(Long orderId, Pageable pageable);
+
+    OrderItemResponseDto getOrderItem(Long orderId, Long itemId);
+
+    OrderResponseDto updateOrderStatus(Long id, UpdateOrderStatusRequest updateRequest);
 }
