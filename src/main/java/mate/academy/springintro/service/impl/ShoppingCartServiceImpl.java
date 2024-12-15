@@ -26,7 +26,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     private final BookRepository bookRepository;
     private final UserRepository userRepository;
     private final ShoppingCartMapper shoppingCartMapper;
-    private final ShoppingCartService shoppingCartService;
 
     @Override
     public ShoppingCartResponseDto getCartForUser(Long userId) {
