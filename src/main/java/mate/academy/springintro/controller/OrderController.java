@@ -3,12 +3,10 @@ package mate.academy.springintro.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import java.util.Set;
 import lombok.AllArgsConstructor;
 import mate.academy.springintro.dto.order.OrderRequestDto;
 import mate.academy.springintro.dto.order.OrderResponseDto;
 import mate.academy.springintro.dto.order.UpdateOrderStatusRequest;
-import mate.academy.springintro.model.OrderItem;
 import mate.academy.springintro.model.User;
 import mate.academy.springintro.service.OrderService;
 import org.springframework.data.domain.Page;
@@ -58,13 +56,5 @@ public class OrderController {
                                               @RequestBody @Valid UpdateOrderStatusRequest
                                                       updateRequest) {
         return orderService.updateOrderStatus(id, updateRequest);
-    }
-
-    private Long getUserIdFromAuthentication(Authentication authentication) {
-        return Long.valueOf(authentication.getName());
-    }
-
-    private Set<OrderItem> getOrderItemsFromRequest(OrderRequestDto orderRequestDto) {
-        return orderRequestDto.getOrderItems();
     }
 }
