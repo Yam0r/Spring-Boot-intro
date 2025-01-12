@@ -8,9 +8,11 @@ import java.math.BigDecimal;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 @Getter
 @Setter
+@Accessors(chain = true)
 public class CreateBookRequestDto {
     @NotBlank(message = "Title cannot be blank")
     private String title;

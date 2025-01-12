@@ -1,10 +1,10 @@
 databaseChangeLog:
   - changeSet:
-      id: create-category-table
+      id: insert-in-category-table
       author: mateacademy
       changes:
         - insert:
-            tableName: category
+            tableName: categories
             columns:
               - column: {name: name, value: "Science Fiction"}
               - column: {name: description, value: "Books that explore futuristic or scientific concepts."}
