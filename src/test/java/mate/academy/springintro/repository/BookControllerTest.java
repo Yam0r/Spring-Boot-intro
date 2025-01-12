@@ -1,12 +1,14 @@
 package mate.academy.springintro.repository;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
 import java.util.List;
-
 import mate.academy.springintro.dto.book.BookDto;
 import mate.academy.springintro.dto.category.CreateBookRequestDto;
 import org.junit.jupiter.api.Assertions;
@@ -35,9 +37,11 @@ public class BookControllerTest {
     @Test
     @WithMockUser(authorities = {"ADMIN"})
     @DisplayName("Create a new book")
-    @Sql(scripts = {"classpath:database/books/add-test-book.sql", "classpath:database/categories/add-test-category.sql"},
+    @Sql(scripts = {"classpath:database/books/add-test-book.sql",
+            "classpath:database/categories/add-test-category.sql"},
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:database/clear-table.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "classpath:database/clear-table.sql",
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void createBook_ValidRequest_ShouldReturnCreatedBook() throws Exception {
 
         CreateBookRequestDto requestDto = new CreateBookRequestDto()
@@ -55,7 +59,8 @@ public class BookControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        BookDto actual = objectMapper.readValue(result.getResponse().getContentAsString(), BookDto.class);
+        BookDto actual = objectMapper.readValue(result.getResponse().getContentAsString(),
+                BookDto.class);
         Assertions.assertNotNull(actual);
         Assertions.assertNotNull(actual.getId());
         Assertions.assertEquals(requestDto.getTitle(), actual.getTitle());
@@ -65,8 +70,10 @@ public class BookControllerTest {
     @Test
     @WithMockUser(authorities = {"USER", "ADMIN"})
     @DisplayName("Get all books")
-    @Sql(scripts = "classpath:database/books/add-test-book.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:database/clear-table.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "classpath:database/books/add-test-book.sql",
+            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:database/clear-table.sql",
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void getAllBooks_Success() throws Exception {
 
         mockMvc.perform(get("/books")
@@ -79,8 +86,10 @@ public class BookControllerTest {
     @Test
     @WithMockUser(authorities = {"USER", "ADMIN"})
     @DisplayName("Get book by ID")
-    @Sql(scripts = "classpath:database/books/add-test-book.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:database/clear-table.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "classpath:database/books/add-test-book.sql",
+            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:database/clear-table.sql",
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void getBookById_Success() throws Exception {
 
         MvcResult result = mockMvc.perform(get("/books/1")
@@ -88,7 +97,8 @@ public class BookControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        BookDto actual = objectMapper.readValue(result.getResponse().getContentAsString(), BookDto.class);
+        BookDto actual = objectMapper.readValue(result.getResponse().getContentAsString(),
+                BookDto.class);
         Assertions.assertNotNull(actual);
         Assertions.assertEquals(1L, actual.getId());
     }
@@ -96,9 +106,11 @@ public class BookControllerTest {
     @Test
     @WithMockUser(authorities = {"ADMIN"})
     @DisplayName("Update a book")
-    @Sql(scripts = {"classpath:database/books/add-test-book.sql", "classpath:database/categories/add-test-category.sql"},
+    @Sql(scripts = {"classpath:database/books/add-test-book.sql",
+            "classpath:database/categories/add-test-category.sql"},
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:database/clear-table.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "classpath:database/clear-table.sql",
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void updateBook_Success() throws Exception {
 
         CreateBookRequestDto updateDto = new CreateBookRequestDto()
@@ -115,11 +127,13 @@ public class BookControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
-        MvcResult result = mockMvc.perform(get("/books/1").contentType(MediaType.APPLICATION_JSON))
+        MvcResult result = mockMvc.perform(get("/books/1")
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
 
-        BookDto actual = objectMapper.readValue(result.getResponse().getContentAsString(), BookDto.class);
+        BookDto actual = objectMapper.readValue(result.getResponse().getContentAsString(),
+                BookDto.class);
         Assertions.assertEquals("Updated Title", actual.getTitle());
         Assertions.assertEquals("Updated Author", actual.getAuthor());
         Assertions.assertEquals("1234567890", actual.getIsbn());

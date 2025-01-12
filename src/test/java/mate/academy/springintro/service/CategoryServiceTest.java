@@ -1,8 +1,17 @@
 package mate.academy.springintro.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import jakarta.persistence.EntityNotFoundException;
+import java.util.Optional;
 import mate.academy.springintro.dto.category.CategoryRequestDto;
 import mate.academy.springintro.dto.category.CategoryResponseDto;
-import jakarta.persistence.EntityNotFoundException;
 import mate.academy.springintro.mapper.CategoryMapper;
 import mate.academy.springintro.model.Category;
 import mate.academy.springintro.repository.CategoryRepository;
@@ -12,14 +21,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.Optional;
 
 class CategoryServiceTest {
 
@@ -49,24 +50,6 @@ class CategoryServiceTest {
         category.setId(1L);
         category.setName("Science Fiction");
     }
-
-//    @Test
-//    void findAll_Success() {
-//        // Указываем поведение мока
-//        when(categoryRepository.findAll(PageRequest.of(0, 10))).thenReturn(Arrays.asList(category));
-//        when(categoryMapper.toDto(category)).thenReturn(categoryResponseDto);
-//
-//        // Тестируем получение всех категорий
-//        var result = categoryService.findAll(0, 10);
-//
-//        // Проверяем, что результат не пустой
-//        assertNotNull(result);
-//        assertEquals(1, result.size());
-//        assertEquals("Science Fiction", result.get(0).getName());
-//
-//        // Проверяем, что репозиторий был вызван с нужным аргументом
-//        verify(categoryRepository, times(1)).findAll(PageRequest.of(0, 10));
-//    }
 
     @Test
     void getById_Success() {
@@ -98,7 +81,8 @@ class CategoryServiceTest {
     @Test
     void update_CategoryNotFound() {
         when(categoryRepository.findById(1L)).thenReturn(Optional.empty());
-        assertThrows(EntityNotFoundException.class, () -> categoryService.update(1L, categoryRequestDto));
+        assertThrows(EntityNotFoundException.class,
+                () -> categoryService.update(1L, categoryRequestDto));
     }
 
     @Test

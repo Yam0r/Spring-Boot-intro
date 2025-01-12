@@ -1,5 +1,12 @@
 package mate.academy.springintro.repository;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import mate.academy.springintro.dto.category.CategoryRequestDto;
 import org.junit.jupiter.api.DisplayName;
@@ -13,10 +20,6 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -59,8 +62,10 @@ public class CategoryControllerTest {
     @Test
     @WithMockUser(authorities = {"USER"})
     @DisplayName("Get all categories")
-    @Sql(scripts = "classpath:database/categories/add-test-category.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:database/clear-table.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "classpath:database/categories/add-test-category.sql",
+            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:database/clear-table.sql",
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void getAll_Success() throws Exception {
         mockMvc.perform(get("/categories?page=0&size=10")
                         .contentType(MediaType.APPLICATION_JSON))
@@ -72,8 +77,10 @@ public class CategoryControllerTest {
     @Test
     @WithMockUser(authorities = {"ADMIN"})
     @DisplayName("Get category by ID")
-    @Sql(scripts = "classpath:database/categories/add-test-category.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:database/clear-table.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "classpath:database/categories/add-test-category.sql",
+            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:database/clear-table.sql",
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void getCategoryById_Success() throws Exception {
         mockMvc.perform(get("/categories/1")
                         .contentType(MediaType.APPLICATION_JSON))
@@ -85,8 +92,10 @@ public class CategoryControllerTest {
     @Test
     @WithMockUser(authorities = {"ADMIN"})
     @DisplayName("Update category")
-    @Sql(scripts = "classpath:database/categories/add-test-category.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:database/clear-table.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "classpath:database/categories/add-test-category.sql",
+            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:database/clear-table.sql",
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void updateCategory_Success() throws Exception {
         CategoryRequestDto requestDto = new CategoryRequestDto();
         requestDto.setName("Updated Detective");
@@ -104,8 +113,10 @@ public class CategoryControllerTest {
     @Test
     @WithMockUser(authorities = {"ADMIN"})
     @DisplayName("Delete category")
-    @Sql(scripts = "classpath:database/categories/add-test-category.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:database/clear-table.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "classpath:database/categories/add-test-category.sql",
+            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:database/clear-table.sql",
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void deleteCategory_Success() throws Exception {
         mockMvc.perform(delete("/categories/1")
                         .contentType(MediaType.APPLICATION_JSON))

@@ -1,5 +1,19 @@
 package mate.academy.springintro.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import mate.academy.springintro.dto.book.BookDto;
 import mate.academy.springintro.dto.category.CreateBookRequestDto;
 import mate.academy.springintro.exception.EntityNotFoundException;
@@ -15,14 +29,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
-import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 class BookServiceTest {
 
@@ -70,7 +76,8 @@ class BookServiceTest {
     @Test
     void save_Success() {
 
-        when(categoryRepository.findAllById(createBookRequestDto.getCategoryIds())).thenReturn(Arrays.asList(new Category(), new Category()));
+        when(categoryRepository.findAllById(createBookRequestDto.getCategoryIds()))
+                .thenReturn(Arrays.asList(new Category(), new Category()));
         when(bookMapper.toModel(createBookRequestDto)).thenReturn(book);
         when(bookRepository.save(any(Book.class))).thenReturn(book);
         when(bookMapper.toBookDto(book)).thenReturn(bookDto);
@@ -85,7 +92,8 @@ class BookServiceTest {
 
     @Test
     void save_CategoryNotFound() {
-        when(categoryRepository.findAllById(createBookRequestDto.getCategoryIds())).thenReturn(Arrays.asList());
+        when(categoryRepository.findAllById(createBookRequestDto.getCategoryIds()))
+                .thenReturn(Arrays.asList());
         assertThrows(EntityNotFoundException.class, () -> bookService.save(createBookRequestDto));
     }
 
