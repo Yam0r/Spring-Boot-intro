@@ -76,8 +76,8 @@ class BookServiceTest {
     @Test
     void save_Success() {
 
-        when(categoryRepository.findAllById(createBookRequestDto.getCategoryIds()))
-                .thenReturn(Arrays.asList(new Category(), new Category()));
+        when(categoryRepository.findAllById(createBookRequestDto
+                .getCategoryIds())).thenReturn(Arrays.asList(new Category(), new Category()));
         when(bookMapper.toModel(createBookRequestDto)).thenReturn(book);
         when(bookRepository.save(any(Book.class))).thenReturn(book);
         when(bookMapper.toBookDto(book)).thenReturn(bookDto);
