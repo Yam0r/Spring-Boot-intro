@@ -43,7 +43,6 @@ public class BookControllerTest {
     @Sql(scripts = "classpath:database/clear-table.sql",
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void createBook_ValidRequest_ShouldReturnCreatedBook() throws Exception {
-
         CreateBookRequestDto requestDto = new CreateBookRequestDto()
                 .setTitle("Grok algorithms")
                 .setAuthor("Aditya Bhargava")
@@ -61,10 +60,17 @@ public class BookControllerTest {
 
         BookDto actual = objectMapper.readValue(result.getResponse().getContentAsString(),
                 BookDto.class);
+
+        BookDto expected = new BookDto()
+                .setId(actual.getId())
+                .setTitle(requestDto.getTitle())
+                .setAuthor(requestDto.getAuthor())
+                .setIsbn(requestDto.getIsbn())
+                .setPrice(requestDto.getPrice())
+                .setCategoryIds(requestDto.getCategoryIds());
+
         Assertions.assertNotNull(actual);
-        Assertions.assertNotNull(actual.getId());
-        Assertions.assertEquals(requestDto.getTitle(), actual.getTitle());
-        Assertions.assertEquals(requestDto.getPrice(), actual.getPrice());
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test
@@ -86,11 +92,21 @@ public class BookControllerTest {
     @Test
     @WithMockUser(authorities = {"USER", "ADMIN"})
     @DisplayName("Get book by ID")
-    @Sql(scripts = "classpath:database/books/add-test-book.sql",
+    @Sql(scripts = {"classpath:database/clear-table.sql",
+            "classpath:database/books/add-test-book.sql"},
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = "classpath:database/clear-table.sql",
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void getBookById_Success() throws Exception {
+        BookDto expected = new BookDto()
+                .setId(1L)
+                .setTitle("Grok algorithms")
+                .setAuthor("Aditya Bhargava")
+                .setIsbn("978-1612292231")
+                .setPrice(BigDecimal.valueOf(9.99))
+                .setDescription("Learn algorithms visually!")
+                .setCoverImage("image_url")
+                .setCategoryIds(List.of(1L));
 
         MvcResult result = mockMvc.perform(get("/books/1")
                         .contentType(MediaType.APPLICATION_JSON))
@@ -99,8 +115,14 @@ public class BookControllerTest {
 
         BookDto actual = objectMapper.readValue(result.getResponse().getContentAsString(),
                 BookDto.class);
-        Assertions.assertNotNull(actual);
-        Assertions.assertEquals(1L, actual.getId());
+
+        Assertions.assertEquals(expected.getId(), actual.getId(),
+                "The book ID should match the expected ID");
+        Assertions.assertEquals(expected.getTitle(), actual.getTitle(),
+                "The book title should match the expected title");
+        Assertions.assertEquals(expected.getAuthor(), actual.getAuthor(),
+                "The book author should match the expected author");
+
     }
 
     @Test
@@ -112,7 +134,6 @@ public class BookControllerTest {
     @Sql(scripts = "classpath:database/clear-table.sql",
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void updateBook_Success() throws Exception {
-
         CreateBookRequestDto updateDto = new CreateBookRequestDto()
                 .setTitle("Updated Title")
                 .setAuthor("Updated Author")

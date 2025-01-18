@@ -69,13 +69,30 @@ class CategoryServiceTest {
 
     @Test
     void save_Success() {
-        when(categoryMapper.toEntity(categoryRequestDto)).thenReturn(category);
-        when(categoryRepository.save(category)).thenReturn(category);
-        when(categoryMapper.toDto(category)).thenReturn(categoryResponseDto);
+        Category category1 = new Category();
+        category1.setId(1L);
+        category1.setName("Science Fiction");
+
+        Category category2 = new Category();
+        category2.setId(2L);
+        category2.setName("Fantasy");
+
+        CategoryRequestDto categoryRequestDto = new CategoryRequestDto();
+        categoryRequestDto.setName("Science Fiction");
+
+        when(categoryMapper.toEntity(categoryRequestDto)).thenReturn(category1);
+
+        when(categoryRepository.save(category1)).thenReturn(category1);
+
+        CategoryResponseDto responseDto = new CategoryResponseDto();
+        responseDto.setName("Science Fiction");
+        when(categoryMapper.toDto(category1)).thenReturn(responseDto);
+
         CategoryResponseDto result = categoryService.save(categoryRequestDto);
+
         assertNotNull(result);
         assertEquals("Science Fiction", result.getName());
-        verify(categoryRepository, times(1)).save(category);
+        verify(categoryRepository, times(1)).save(category1);
     }
 
     @Test

@@ -2,6 +2,7 @@ package mate.academy.springintro.dto.book;
 
 import java.math.BigDecimal;
 import java.util.List;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -9,6 +10,7 @@ import lombok.experimental.Accessors;
 @Getter
 @Setter
 @Accessors(chain = true)
+@EqualsAndHashCode
 public class BookDto {
     private Long id;
 

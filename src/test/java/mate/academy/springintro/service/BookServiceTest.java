@@ -75,9 +75,8 @@ class BookServiceTest {
 
     @Test
     void save_Success() {
-
-        when(categoryRepository.findAllById(createBookRequestDto
-                .getCategoryIds())).thenReturn(Arrays.asList(new Category(), new Category()));
+        when(categoryRepository.findAllById(createBookRequestDto.getCategoryIds()))
+                .thenReturn(Arrays.asList(new Category(), new Category()));
         when(bookMapper.toModel(createBookRequestDto)).thenReturn(book);
         when(bookRepository.save(any(Book.class))).thenReturn(book);
         when(bookMapper.toBookDto(book)).thenReturn(bookDto);
@@ -86,7 +85,6 @@ class BookServiceTest {
 
         assertNotNull(result);
         assertEquals("Test Book", result.getTitle());
-
         verify(bookRepository, times(1)).save(any(Book.class));
     }
 
@@ -132,10 +130,45 @@ class BookServiceTest {
 
     @Test
     void findByCategoryId_Success() {
-        when(bookRepository.findAllByCategoriesId(1L)).thenReturn(Arrays.asList(book));
-        when(bookMapper.toBookDto(book)).thenReturn(bookDto);
+        // Подготовка данных: книги с несколькими категориями
+        Category category1 = new Category();
+        category1.setId(1L);
+        category1.setName("Science Fiction");
+
+        Category category2 = new Category();
+        category2.setId(2L);
+        category2.setName("Fantasy");
+
+        Book book1 = new Book();
+        book1.setId(1L);
+        book1.setTitle("Book 1");
+        book1.setCategories(Set.of(category1));
+
+        Book book2 = new Book();
+        book2.setId(2L);
+        book2.setTitle("Book 2");
+        book2.setCategories(Set.of(category2));
+
+        BookDto bookDto1 = new BookDto();
+        bookDto1.setId(1L);
+        bookDto1.setTitle("Book 1");
+
+        BookDto bookDto2 = new BookDto();
+        bookDto2.setId(2L);
+        bookDto2.setTitle("Book 2");
+
+        when(bookRepository.findAllByCategoriesId(1L)).thenReturn(Arrays.asList(book1, book2));
+        when(bookMapper.toBookDto(book1)).thenReturn(bookDto1);
+        when(bookMapper.toBookDto(book2)).thenReturn(bookDto2);
+
         List<BookDto> result = bookService.findByCategoryId(1L);
+
         assertNotNull(result);
         assertFalse(result.isEmpty());
+        assertEquals(2, result.size());
+        assertEquals("Book 1", result.get(0).getTitle());
+        assertEquals("Book 2", result.get(1).getTitle());
+
+        verify(bookRepository, times(1)).findAllByCategoriesId(1L);
     }
 }

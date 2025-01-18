@@ -34,7 +34,8 @@ public class CategoryControllerTest {
     @Test
     @WithMockUser(authorities = {"ADMIN"})
     @DisplayName("Create a new category")
-    @Sql(scripts = {"classpath:database/books/add-test-book.sql",
+    @Sql(scripts = {"classpath:database/clear-table.sql",
+            "classpath:database/books/add-test-book.sql",
             "classpath:database/categories/add-test-category.sql"},
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = "classpath:database/clear-table.sql",
@@ -45,25 +46,26 @@ public class CategoryControllerTest {
         requestDto.setDescription("Mystery books");
         String jsonRequest = objectMapper.writeValueAsString(requestDto);
 
-        mockMvc.perform(post("/categories")
-                        .contentType("application/json")
+        MvcResult result = mockMvc.perform(post("/categories")
+                        .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.name").value("Detective"))
-                .andExpect(jsonPath("$.description").value("Mystery books"));
-
-        MvcResult result = mockMvc.perform(post("/categories")
-                        .content(jsonRequest)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.description").value("Mystery books"))
                 .andReturn();
+
+        String responseContent = result.getResponse().getContentAsString();
+        System.out.println("Response: " + responseContent);
     }
 
     @Test
     @WithMockUser(authorities = {"USER"})
     @DisplayName("Get all categories")
-    @Sql(scripts = "classpath:database/categories/add-test-category.sql",
+    @Sql(scripts = {"classpath:database/clear-table.sql",
+            "classpath:database/books/add-test-book.sql",
+            "classpath:database/categories/add-test-category.sql"},
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+
     @Sql(scripts = "classpath:database/clear-table.sql",
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void getAll_Success() throws Exception {
@@ -77,7 +79,9 @@ public class CategoryControllerTest {
     @Test
     @WithMockUser(authorities = {"ADMIN"})
     @DisplayName("Get category by ID")
-    @Sql(scripts = "classpath:database/categories/add-test-category.sql",
+    @Sql(scripts = {"classpath:database/clear-table.sql",
+            "classpath:database/books/add-test-book.sql",
+            "classpath:database/categories/add-test-category.sql"},
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = "classpath:database/clear-table.sql",
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
@@ -92,7 +96,9 @@ public class CategoryControllerTest {
     @Test
     @WithMockUser(authorities = {"ADMIN"})
     @DisplayName("Update category")
-    @Sql(scripts = "classpath:database/categories/add-test-category.sql",
+    @Sql(scripts = {"classpath:database/clear-table.sql",
+            "classpath:database/books/add-test-book.sql",
+            "classpath:database/categories/add-test-category.sql"},
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = "classpath:database/clear-table.sql",
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
@@ -113,7 +119,9 @@ public class CategoryControllerTest {
     @Test
     @WithMockUser(authorities = {"ADMIN"})
     @DisplayName("Delete category")
-    @Sql(scripts = "classpath:database/categories/add-test-category.sql",
+    @Sql(scripts = {"classpath:database/clear-table.sql",
+            "classpath:database/books/add-test-book.sql",
+            "classpath:database/categories/add-test-category.sql"},
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = "classpath:database/clear-table.sql",
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
