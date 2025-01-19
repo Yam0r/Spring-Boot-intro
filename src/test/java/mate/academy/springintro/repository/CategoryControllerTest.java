@@ -40,7 +40,7 @@ public class CategoryControllerTest {
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = "classpath:database/clear-table.sql",
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-    void save_ValidRequest_Success() throws Exception {
+    void save_WithValidRequest_ReturnsCreatedCategory() throws Exception {
         CategoryRequestDto requestDto = new CategoryRequestDto();
         requestDto.setName("Detective");
         requestDto.setDescription("Mystery books");
@@ -53,9 +53,6 @@ public class CategoryControllerTest {
                 .andExpect(jsonPath("$.name").value("Detective"))
                 .andExpect(jsonPath("$.description").value("Mystery books"))
                 .andReturn();
-
-        String responseContent = result.getResponse().getContentAsString();
-        System.out.println("Response: " + responseContent);
     }
 
     @Test
@@ -68,7 +65,7 @@ public class CategoryControllerTest {
 
     @Sql(scripts = "classpath:database/clear-table.sql",
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-    void getAll_Success() throws Exception {
+    void getAll_WithValidRequest_ReturnsCategoriesList() throws Exception {
         mockMvc.perform(get("/categories?page=0&size=10")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -85,7 +82,7 @@ public class CategoryControllerTest {
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = "classpath:database/clear-table.sql",
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-    void getCategoryById_Success() throws Exception {
+    void getById_WithValidId_ReturnsCategory() throws Exception {
         mockMvc.perform(get("/categories/1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -102,7 +99,7 @@ public class CategoryControllerTest {
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = "classpath:database/clear-table.sql",
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-    void updateCategory_Success() throws Exception {
+    void update_WithValidRequest_UpdatesCategory() throws Exception {
         CategoryRequestDto requestDto = new CategoryRequestDto();
         requestDto.setName("Updated Detective");
         requestDto.setDescription("Updated Mystery books");
@@ -125,7 +122,7 @@ public class CategoryControllerTest {
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = "classpath:database/clear-table.sql",
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-    void deleteCategory_Success() throws Exception {
+    void delete_WithValidId_RemovesCategory() throws Exception {
         mockMvc.perform(delete("/categories/1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());

@@ -52,7 +52,7 @@ class CategoryServiceTest {
     }
 
     @Test
-    void getById_Success() {
+    void getById_WithValidId_ReturnsCorrectDto() {
         when(categoryRepository.findById(1L)).thenReturn(Optional.of(category));
         when(categoryMapper.toDto(category)).thenReturn(categoryResponseDto);
         CategoryResponseDto result = categoryService.getById(1L);
@@ -62,48 +62,48 @@ class CategoryServiceTest {
     }
 
     @Test
-    void getById_CategoryNotFound() {
+    void getById_WithInvalidId_ThrowsEntityNotFoundException() {
         when(categoryRepository.findById(1L)).thenReturn(Optional.empty());
         assertThrows(EntityNotFoundException.class, () -> categoryService.getById(1L));
     }
 
     @Test
-    void save_Success() {
-        Category category1 = new Category();
-        category1.setId(1L);
-        category1.setName("Science Fiction");
+    void save_WithValidRequest_ReturnsCorrectDto() {
+        Category categoryScience = new Category();
+        categoryScience.setId(1L);
+        categoryScience.setName("Science Fiction");
 
-        Category category2 = new Category();
-        category2.setId(2L);
-        category2.setName("Fantasy");
+        Category categoryFantasy = new Category();
+        categoryFantasy.setId(2L);
+        categoryFantasy.setName("Fantasy");
 
         CategoryRequestDto categoryRequestDto = new CategoryRequestDto();
         categoryRequestDto.setName("Science Fiction");
 
-        when(categoryMapper.toEntity(categoryRequestDto)).thenReturn(category1);
+        when(categoryMapper.toEntity(categoryRequestDto)).thenReturn(categoryScience);
 
-        when(categoryRepository.save(category1)).thenReturn(category1);
+        when(categoryRepository.save(categoryScience)).thenReturn(categoryScience);
 
         CategoryResponseDto responseDto = new CategoryResponseDto();
         responseDto.setName("Science Fiction");
-        when(categoryMapper.toDto(category1)).thenReturn(responseDto);
+        when(categoryMapper.toDto(categoryScience)).thenReturn(responseDto);
 
         CategoryResponseDto result = categoryService.save(categoryRequestDto);
 
         assertNotNull(result);
         assertEquals("Science Fiction", result.getName());
-        verify(categoryRepository, times(1)).save(category1);
+        verify(categoryRepository, times(1)).save(categoryScience);
     }
 
     @Test
-    void update_CategoryNotFound() {
+    void update_WithInvalidId_ThrowsEntityNotFoundException() {
         when(categoryRepository.findById(1L)).thenReturn(Optional.empty());
         assertThrows(EntityNotFoundException.class,
                 () -> categoryService.update(1L, categoryRequestDto));
     }
 
     @Test
-    void deleteById_Success() {
+    void deleteById_WithValidId_RemovesCategory() {
         when(categoryRepository.existsById(1L)).thenReturn(true);
         doNothing().when(categoryRepository).deleteById(1L);
         categoryService.deleteById(1L);
@@ -111,7 +111,7 @@ class CategoryServiceTest {
     }
 
     @Test
-    void deleteById_CategoryNotFound() {
+    void deleteById_WithInvalidId_ThrowsEntityNotFoundException() {
         when(categoryRepository.existsById(1L)).thenReturn(false);
         assertThrows(EntityNotFoundException.class, () -> categoryService.deleteById(1L));
     }

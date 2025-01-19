@@ -54,19 +54,19 @@ class BookServiceTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-
         createBookRequestDto = new CreateBookRequestDto();
         createBookRequestDto.setCategoryIds(Arrays.asList(1L, 2L));
 
-        Category category1 = new Category();
-        category1.setId(1L);
-        Category category2 = new Category();
-        category2.setId(2L);
+        Category scienceFictionCategory = new Category();
+        scienceFictionCategory.setId(1L);
+
+        Category fantasyCategory = new Category();
+        fantasyCategory.setId(2L);
 
         book = new Book();
         book.setId(1L);
         book.setTitle("Test Book");
-        book.setCategories(Set.of(category1, category2));
+        book.setCategories(Set.of(scienceFictionCategory, fantasyCategory));
 
         bookDto = new BookDto();
         bookDto.setId(1L);
@@ -74,7 +74,7 @@ class BookServiceTest {
     }
 
     @Test
-    void save_Success() {
+    void save_WithValidRequest_ReturnSavedBookDto() {
         when(categoryRepository.findAllById(createBookRequestDto.getCategoryIds()))
                 .thenReturn(Arrays.asList(new Category(), new Category()));
         when(bookMapper.toModel(createBookRequestDto)).thenReturn(book);
@@ -89,14 +89,14 @@ class BookServiceTest {
     }
 
     @Test
-    void save_CategoryNotFound() {
+    void save_WithNonexistentCategoryIds_ThrowEntityNotFoundException() {
         when(categoryRepository.findAllById(createBookRequestDto.getCategoryIds()))
                 .thenReturn(Arrays.asList());
         assertThrows(EntityNotFoundException.class, () -> bookService.save(createBookRequestDto));
     }
 
     @Test
-    void findById_Success() {
+    void findById_WithExistingId_ReturnBookDto() {
         when(bookRepository.findById(1L)).thenReturn(Optional.of(book));
         when(bookMapper.toBookDto(book)).thenReturn(bookDto);
         BookDto result = bookService.findById(1L);
@@ -106,13 +106,13 @@ class BookServiceTest {
     }
 
     @Test
-    void findById_BookNotFound() {
+    void findById_WithNonexistentId_ThrowEntityNotFoundException() {
         when(bookRepository.findById(1L)).thenReturn(Optional.empty());
         assertThrows(EntityNotFoundException.class, () -> bookService.findById(1L));
     }
 
     @Test
-    void updateBookById_Success() {
+    void updateBookById_WithValidRequest_UpdateBookAndSaveToRepository() {
         CreateBookRequestDto updateDto = new CreateBookRequestDto();
         updateDto.setCategoryIds(Arrays.asList(1L, 2L));
         when(bookRepository.findById(1L)).thenReturn(Optional.of(book));
@@ -122,52 +122,52 @@ class BookServiceTest {
     }
 
     @Test
-    void deleteById_Success() {
+    void deleteById_WithExistingId_DeleteBookFromRepository() {
         doNothing().when(bookRepository).deleteById(1L);
         bookService.deleteById(1L);
         verify(bookRepository, times(1)).deleteById(1L);
     }
 
     @Test
-    void findByCategoryId_Success() {
-        // Подготовка данных: книги с несколькими категориями
-        Category category1 = new Category();
-        category1.setId(1L);
-        category1.setName("Science Fiction");
+    void findByCategoryId_WithValidCategoryId_ReturnBooksList() {
+        Category scienceFictionCategory = new Category();
+        scienceFictionCategory.setId(1L);
+        scienceFictionCategory.setName("Science Fiction");
 
-        Category category2 = new Category();
-        category2.setId(2L);
-        category2.setName("Fantasy");
+        Category fantasyCategory = new Category();
+        fantasyCategory.setId(2L);
+        fantasyCategory.setName("Fantasy");
 
-        Book book1 = new Book();
-        book1.setId(1L);
-        book1.setTitle("Book 1");
-        book1.setCategories(Set.of(category1));
+        Book scienceFictionBook = new Book();
+        scienceFictionBook.setId(1L);
+        scienceFictionBook.setTitle("Dune");
+        scienceFictionBook.setCategories(Set.of(scienceFictionCategory));
 
-        Book book2 = new Book();
-        book2.setId(2L);
-        book2.setTitle("Book 2");
-        book2.setCategories(Set.of(category2));
+        Book fantasyBook = new Book();
+        fantasyBook.setId(2L);
+        fantasyBook.setTitle("The Hobbit");
+        fantasyBook.setCategories(Set.of(fantasyCategory));
 
-        BookDto bookDto1 = new BookDto();
-        bookDto1.setId(1L);
-        bookDto1.setTitle("Book 1");
+        BookDto scienceFictionBookDto = new BookDto();
+        scienceFictionBookDto.setId(1L);
+        scienceFictionBookDto.setTitle("Dune");
 
-        BookDto bookDto2 = new BookDto();
-        bookDto2.setId(2L);
-        bookDto2.setTitle("Book 2");
+        BookDto fantasyBookDto = new BookDto();
+        fantasyBookDto.setId(2L);
+        fantasyBookDto.setTitle("The Hobbit");
 
-        when(bookRepository.findAllByCategoriesId(1L)).thenReturn(Arrays.asList(book1, book2));
-        when(bookMapper.toBookDto(book1)).thenReturn(bookDto1);
-        when(bookMapper.toBookDto(book2)).thenReturn(bookDto2);
+        when(bookRepository.findAllByCategoriesId(1L)).thenReturn(Arrays.asList(scienceFictionBook,
+                fantasyBook));
+        when(bookMapper.toBookDto(scienceFictionBook)).thenReturn(scienceFictionBookDto);
+        when(bookMapper.toBookDto(fantasyBook)).thenReturn(fantasyBookDto);
 
         List<BookDto> result = bookService.findByCategoryId(1L);
 
         assertNotNull(result);
         assertFalse(result.isEmpty());
         assertEquals(2, result.size());
-        assertEquals("Book 1", result.get(0).getTitle());
-        assertEquals("Book 2", result.get(1).getTitle());
+        assertEquals("Dune", result.get(0).getTitle());
+        assertEquals("The Hobbit", result.get(1).getTitle());
 
         verify(bookRepository, times(1)).findAllByCategoriesId(1L);
     }

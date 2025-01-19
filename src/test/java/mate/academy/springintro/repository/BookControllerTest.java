@@ -80,7 +80,7 @@ public class BookControllerTest {
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = "classpath:database/clear-table.sql",
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-    void getAllBooks_Success() throws Exception {
+    void getAllBooks_WithExistingBooks_ReturnBooksList() throws Exception {
 
         mockMvc.perform(get("/books")
                         .contentType(MediaType.APPLICATION_JSON))
@@ -97,7 +97,7 @@ public class BookControllerTest {
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = "classpath:database/clear-table.sql",
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-    void getBookById_Success() throws Exception {
+    void getBookById_WithValidId_ReturnBookDto() throws Exception {
         BookDto expected = new BookDto()
                 .setId(1L)
                 .setTitle("Grok algorithms")
@@ -133,7 +133,7 @@ public class BookControllerTest {
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = "classpath:database/clear-table.sql",
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-    void updateBook_Success() throws Exception {
+    void updateBook_WithValidRequest_UpdateBookAndReturnUpdatedDto() throws Exception {
         CreateBookRequestDto updateDto = new CreateBookRequestDto()
                 .setTitle("Updated Title")
                 .setAuthor("Updated Author")
