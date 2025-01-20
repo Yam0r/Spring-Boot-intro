@@ -26,10 +26,12 @@ import mate.academy.springintro.repository.book.BookSpecificationBuilder;
 import mate.academy.springintro.service.impl.BookServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 class BookServiceTest {
 
     @Mock
@@ -53,7 +55,6 @@ class BookServiceTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
         createBookRequestDto = new CreateBookRequestDto();
         createBookRequestDto.setCategoryIds(Arrays.asList(1L, 2L));
 
@@ -116,7 +117,6 @@ class BookServiceTest {
         CreateBookRequestDto updateDto = new CreateBookRequestDto();
         updateDto.setCategoryIds(Arrays.asList(1L, 2L));
         when(bookRepository.findById(1L)).thenReturn(Optional.of(book));
-        when(bookMapper.toModel(updateDto)).thenReturn(book);
         bookService.updateBookById(1L, updateDto);
         verify(bookRepository, times(1)).save(book);
     }

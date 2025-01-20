@@ -1,5 +1,8 @@
 package mate.academy.springintro.repository;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -9,9 +12,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 import mate.academy.springintro.dto.book.BookDto;
 import mate.academy.springintro.dto.category.CreateBookRequestDto;
-import org.junit.jupiter.api.Assertions;
+import mate.academy.springintro.model.Book;
+import mate.academy.springintro.repository.book.BookRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +38,9 @@ public class BookControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Autowired
+    private BookRepository bookRepository;
 
     @Test
     @WithMockUser(authorities = {"ADMIN"})
@@ -69,8 +77,8 @@ public class BookControllerTest {
                 .setPrice(requestDto.getPrice())
                 .setCategoryIds(requestDto.getCategoryIds());
 
-        Assertions.assertNotNull(actual);
-        Assertions.assertEquals(expected, actual);
+        assertNotNull(actual);
+        assertEquals(expected, actual);
     }
 
     @Test
@@ -81,7 +89,6 @@ public class BookControllerTest {
     @Sql(scripts = "classpath:database/clear-table.sql",
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void getAllBooks_WithExistingBooks_ReturnBooksList() throws Exception {
-
         mockMvc.perform(get("/books")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -116,13 +123,9 @@ public class BookControllerTest {
         BookDto actual = objectMapper.readValue(result.getResponse().getContentAsString(),
                 BookDto.class);
 
-        Assertions.assertEquals(expected.getId(), actual.getId(),
-                "The book ID should match the expected ID");
-        Assertions.assertEquals(expected.getTitle(), actual.getTitle(),
-                "The book title should match the expected title");
-        Assertions.assertEquals(expected.getAuthor(), actual.getAuthor(),
-                "The book author should match the expected author");
-
+        assertEquals(expected.getId(), actual.getId(), "The book ID should match");
+        assertEquals(expected.getTitle(), actual.getTitle(), "The book title should match");
+        assertEquals(expected.getAuthor(), actual.getAuthor(), "The book author should match");
     }
 
     @Test
@@ -148,16 +151,13 @@ public class BookControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
-        MvcResult result = mockMvc.perform(get("/books/1")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn();
+        Optional<Book> updatedBook = bookRepository.findById(1L);
+        assertTrue(updatedBook.isPresent(), "Book should be present in the repository");
 
-        BookDto actual = objectMapper.readValue(result.getResponse().getContentAsString(),
-                BookDto.class);
-        Assertions.assertEquals("Updated Title", actual.getTitle());
-        Assertions.assertEquals("Updated Author", actual.getAuthor());
-        Assertions.assertEquals("1234567890", actual.getIsbn());
-        Assertions.assertEquals(BigDecimal.valueOf(19.99), actual.getPrice());
+        Book actualBook = updatedBook.get();
+        assertEquals("Updated Title", actualBook.getTitle());
+        assertEquals("Updated Author", actualBook.getAuthor());
+        assertEquals("1234567890", actualBook.getIsbn());
+        assertEquals(BigDecimal.valueOf(19.99), actualBook.getPrice());
     }
 }
