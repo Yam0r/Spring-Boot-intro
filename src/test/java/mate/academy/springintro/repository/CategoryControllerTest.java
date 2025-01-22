@@ -1,5 +1,6 @@
 package mate.academy.springintro.repository;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
@@ -9,6 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import mate.academy.springintro.dto.category.CategoryRequestDto;
+import mate.academy.springintro.dto.category.CategoryResponseDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,12 +107,18 @@ public class CategoryControllerTest {
         requestDto.setDescription("Updated Mystery books");
         String jsonRequest = objectMapper.writeValueAsString(requestDto);
 
-        mockMvc.perform(patch("/categories/1")
+        MvcResult result = mockMvc.perform(patch("/categories/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("Updated Detective"))
-                .andExpect(jsonPath("$.description").value("Updated Mystery books"));
+                .andReturn();
+
+        String jsonResponse = result.getResponse().getContentAsString();
+        CategoryResponseDto responseDto = objectMapper.readValue(jsonResponse,
+                CategoryResponseDto.class);
+
+        assertEquals("Updated Detective", responseDto.getName());
+        assertEquals("Updated Mystery books", responseDto.getDescription());
     }
 
     @Test

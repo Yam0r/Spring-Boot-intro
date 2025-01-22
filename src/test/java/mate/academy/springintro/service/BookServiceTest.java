@@ -86,7 +86,7 @@ class BookServiceTest {
 
         assertNotNull(result);
         assertEquals("Test Book", result.getTitle());
-        verify(bookRepository, times(1)).save(any(Book.class));
+        verify(bookRepository).save(any(Book.class));
     }
 
     @Test
