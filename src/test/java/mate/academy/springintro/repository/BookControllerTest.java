@@ -148,4 +148,30 @@ public class BookControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
+
+    @Test
+    @WithMockUser(authorities = {"ADMIN"})
+    @DisplayName("Update book with invalid price")
+    @Sql(scripts = {"classpath:database/books/add-test-book.sql",
+            "classpath:database/categories/add-test-category.sql"},
+            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:database/clear-table.sql",
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    void updateBook_WithInvalidPrice_ReturnsBadRequestStatus() throws Exception {
+        CreateBookRequestDto updateDto = new CreateBookRequestDto()
+                .setTitle("Updated Title")
+                .setAuthor("Updated Author")
+                .setIsbn("1234567890")
+                .setPrice(BigDecimal.valueOf(-1))
+                .setCategoryIds(List.of(1L));
+
+        String jsonRequest = objectMapper.writeValueAsString(updateDto);
+
+        mockMvc.perform(put("/books/1")
+                        .content(jsonRequest)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errors[0]")
+                        .value("price Price must be greater than or equal to 0"));
+    }
 }
