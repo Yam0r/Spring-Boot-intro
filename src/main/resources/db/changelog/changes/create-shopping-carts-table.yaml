@@ -2,6 +2,11 @@ databaseChangeLog:
   - changeSet:
       id: create-shopping-carts
       author: mateacademy
+      preConditions:
+        - onFail: CONTINUE
+        - not:
+            tableExists:
+              tableName: shopping_carts
       changes:
         - createTable:
             tableName: shopping_carts

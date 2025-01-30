@@ -2,18 +2,28 @@ databaseChangeLog:
   - include:
       file: db/changelog/changes/creates-book-table.yaml
   - include:
+      file: db/changelog/changes/creates-category-table.yaml
+  - include:
       file: db/changelog/changes/create-users-table.yaml
   - include:
       file: db/changelog/changes/create-roles-table.yaml
   - include:
       file: db/changelog/changes/create-users-roles-table.yaml
   - include:
-      file: db/changelog/changes/creates-category-table.yaml
-  - include:
       file: db/changelog/changes/create-shopping-carts-table.yaml
   - include:
       file: db/changelog/changes/create-cart-items-table.yaml
   - include:
-      file: db/changelog/changes/set-bcrypt-password.yaml
+      file: db/changelog/changes/create-table-of-order-items.yaml
+  - include:
+      file: db/changelog/changes/create-table-of-orders.yaml
+  - include:
+      file: db/changelog/changes/insert-categories.yaml
   - include:
       file: db/changelog/changes/insert-roles.yaml
+  - include:
+      file: db/changelog/changes/insert-roles-of-users.yaml
+  - include:
+      file: db/changelog/changes/insert-users.yaml
+  - include:
+      file: db/changelog/changes/set-bcrypt-password.yaml

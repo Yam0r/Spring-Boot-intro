@@ -10,13 +10,13 @@ databaseChangeLog:
               - column: {name: description, value: "Books that explore futuristic or scientific concepts."}
               - column: {name: is_deleted, value: 0}
         - insert:
-            tableName: category
+            tableName: categories
             columns:
               - column: {name: name, value: "Fantasy"}
               - column: {name: description, value: "Books with magical or supernatural elements."}
               - column: {name: is_deleted, value: 0}
         - insert:
-            tableName: category
+            tableName: categories
             columns:
               - column: {name: name, value: "Mystery"}
               - column: {name: description, value: "Books focused on solving crimes or uncovering secrets."}

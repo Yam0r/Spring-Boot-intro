@@ -85,7 +85,7 @@
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-			<version>2.1.0</version>
+			<version>2.3.0</version>
 		</dependency>
 
 		<dependency>
@@ -93,12 +93,10 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -164,6 +162,13 @@
 			<groupId>org.testcontainers</groupId>
 			<artifactId>mysql</artifactId>
 			<scope>test</scope>
+		</dependency>
+
+		<!-- Liquibase Dependency -->
+		<dependency>
+			<groupId>org.liquibase</groupId>
+			<artifactId>liquibase-core</artifactId>
+			<version>4.24.0</version> <!-- Убедись, что версия актуальная -->
 		</dependency>
 
 	</dependencies>
@@ -238,6 +243,26 @@
 					<failsOnError>true</failsOnError>
 					<linkXRef>false</linkXRef>
 					<sourceDirectories>src</sourceDirectories>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.liquibase</groupId>
+				<artifactId>liquibase-maven-plugin</artifactId>
+				<version>4.27.0</version> <!-- Убедись, что версия актуальная -->
+				<executions>
+					<execution>
+						<goals>
+							<goal>update</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<url>jdbc:mysql://localhost:3306/books</url> <!-- URL к твоей базе данных -->
+					<username>Admin</username>
+					<password>admin</password>
+					<driver>com.mysql.cj.jdbc.Driver</driver>
+					<changeLogFile>src/main/resources/db/changelog/db.changelog-master.yaml</changeLogFile> <!-- Путь к changelog -->
 				</configuration>
 			</plugin>
 		</plugins>
